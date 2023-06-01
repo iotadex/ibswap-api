@@ -1,0 +1,1058 @@
+[
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x0215E6fec660886f63337a9B328433C5dE00a83C"
+    },
+    {
+        "token0": "0x356d34daFB474bCFd3BE3C9ebBC5f85238AeA0Ca",
+        "token1": "0x87b1ccdbDD975807C96E43414CBB61e13C2b9fC3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x0375eF585a3b6F7939b9C09Bee2e28c6095a475f"
+    },
+    {
+        "token0": "0x87b1ccdbDD975807C96E43414CBB61e13C2b9fC3",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x06A0464AAAc63335C8761b79e6B0C8F98232ab8F"
+    },
+    {
+        "token0": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "token1": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x09Bc1AD1cA984B66F7F31f24b2EA1D9a6CF822DD"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x5Fa8F56808F287221E6fA44964c41254C83e0b55",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x0B8bD9949cf3002d5f6D298dfebC7214a9D9Bc99"
+    },
+    {
+        "token0": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "token1": "0x9e814822Bfb883b643d2d7a608cbF3Fe4e7DeA74",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x0c0D28646178bae3325B7B19428ABFe230c51AFc"
+    },
+    {
+        "token0": "0x5Fa8F56808F287221E6fA44964c41254C83e0b55",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x0F9Aa27fC850A6DC6C15C9b1AcA18848DdB28cB0"
+    },
+    {
+        "token0": "0x87b1ccdbDD975807C96E43414CBB61e13C2b9fC3",
+        "token1": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x102EB491652a9dD2A083E1Fb283FA58398CbCccA"
+    },
+    {
+        "token0": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "token1": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x13d20F8F4899B8436B57aA2Fa5564201a673da05"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x161A4Cba61c0E8C2669447a271B5e07CDF087193"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x168db9ecf736e17f3cA33332F02AC76421F3E41b"
+    },
+    {
+        "token0": "0x0be5c32E08B6d26Cbf399604A1ECbd78217A0080",
+        "token1": "0x3Faf3B7E1d8CB33F3815E9119D189bB2d42A26b3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x1796D42ad37c1640ED41eBb742c24A72a30398A3"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x189eFf58f4E76F740adD2E235f5155b974C02C17"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x77a8FB551BfdBcadf4BBCD52381004b71de021c3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x1B00DBc4Af4387E174B4b78E4bef8Afb2f1C2305"
+    },
+    {
+        "token0": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x1BD635FB9c5a714d9192D0951Ec11066E0f1F736"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x1C97B4d5FD6B2a404B345AEA97De09690fd8d6F4"
+    },
+    {
+        "token0": "0x87b1ccdbDD975807C96E43414CBB61e13C2b9fC3",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x225b4D5C60b728DC5fFe2C9365891840Df424a5A"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0xf0D82b7837fC074B8d349e3cEd773089fA77Fde3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x26e61ba22b6028dA6243a7E489fd0b1e89f0df3e"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x28B277a5866B4b47cCd0Beb04Efa1ccC04eC3227"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x2C911AACDb61fc107D464458113de1f9ae96824d"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x9e814822Bfb883b643d2d7a608cbF3Fe4e7DeA74",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x2D85b0d664f8446B97dF8c571c36f799a61cDE44"
+    },
+    {
+        "token0": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x31c44DD801AEf097561A6d9777D48035f7F7881D"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x88bA3fA1f7d371C9a54C812def7542c2E1Dc0feD",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x33b100f813Ce1573009de2e616DdB37A2299812c"
+    },
+    {
+        "token0": "0x3Faf3B7E1d8CB33F3815E9119D189bB2d42A26b3",
+        "token1": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x34C732E26Ce14B7e81a9C2683D1844B2008AE103"
+    },
+    {
+        "token0": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x36D3288463DCF3aA6AD29635bad741073E2adA57"
+    },
+    {
+        "token0": "0x3Faf3B7E1d8CB33F3815E9119D189bB2d42A26b3",
+        "token1": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x37368054D549D7D8aEDed28db9b4110597Df61B3"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x3c3f358496F7F58B643bE19166daAfa0977E68a8"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0x88bA3fA1f7d371C9a54C812def7542c2E1Dc0feD",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x3D6B63dE732366343f39DAE27e827f865Ef4eF14"
+    },
+    {
+        "token0": "0x3Faf3B7E1d8CB33F3815E9119D189bB2d42A26b3",
+        "token1": "0x5Fa8F56808F287221E6fA44964c41254C83e0b55",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x3fDF3b3bcbC543cA12f9989196903C495d9ABb23"
+    },
+    {
+        "token0": "0x3Cf63EB3afE4b4717e78eAe99d632321fc5Ce519",
+        "token1": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x406153d92579841835E820Ed2631384CA6910dE0"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x43E7d76d633aBed0B7E3571B9091a5Ff583e2fe3"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x4485ddb639daC819f921197ECAc8F42596116a6e"
+    },
+    {
+        "token0": "0x356d34daFB474bCFd3BE3C9ebBC5f85238AeA0Ca",
+        "token1": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x461263AeD034Ccea2467282dBCBB27F509033978"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x47D381B296681518A879CE071b97C6382583D1e3"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x49b8A4BD22addB02d3695296A2445E123c022194"
+    },
+    {
+        "token0": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x4a199Cc7cA0CbcE8d7685E6190e9196377e4a336"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xdFCF738225F6508F7A664c3c7D236432501e16d4",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x4E01ee025E944161Da3Ed9a6557BDfbAeA2E5D6D"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x56a74d86567a24D7efFB69d221E6F0Af1Fe21F8f"
+    },
+    {
+        "token0": "0x9Ee409aa1e2Cd2d813e3B2471E00d5260A71b833",
+        "token1": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x58A535F00f35bF9592b8380d611aAe6f1800777a"
+    },
+    {
+        "token0": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x59541296e511c646505886E2C6fbc28521A1bc18"
+    },
+    {
+        "token0": "0x574Eb168Ae173e9Bc38eA3D5e3356e6f74F6e688",
+        "token1": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x5B4E0Ae771F8D79B5f8955F44fad29da9bF142e0"
+    },
+    {
+        "token0": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x5Dc3dFBd47c1813A5DedE889F03d17810D2F4b0D"
+    },
+    {
+        "token0": "0x87b1ccdbDD975807C96E43414CBB61e13C2b9fC3",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x5f1b9BD3Fb3840997006db1B275e3075532E68b5"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x5F889DCF43D3e068e133D12D67FF63b81621c3E0"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x612DA9b742bB86851E1ff3754Aed6B09cC679A4D"
+    },
+    {
+        "token0": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x614a4B315Da6febf8fFd41D0F224915014a95975"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xf0D82b7837fC074B8d349e3cEd773089fA77Fde3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x614d50d8F3621C9a702de053163763822930ab61"
+    },
+    {
+        "token0": "0x88bA3fA1f7d371C9a54C812def7542c2E1Dc0feD",
+        "token1": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x61Df9E8209eaFd1d8F5acD6c0AF1aD8F7aE71032"
+    },
+    {
+        "token0": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x63A2e71A70Bb4f7b9F1c682e59686c480d0e9BCf"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x65d595527cda79d7B113404b7fE6983B29A1A1a3"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x69e849987824F05b95e02Cbe89F5134547E4f453"
+    },
+    {
+        "token0": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "token1": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x6A4E1aDb94CbBA653D4E6cCE39dbcc28d65033B8"
+    },
+    {
+        "token0": "0x5Fa8F56808F287221E6fA44964c41254C83e0b55",
+        "token1": "0x9e814822Bfb883b643d2d7a608cbF3Fe4e7DeA74",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x6A5f9141489272a1ED879F2AC9C629b4c232c94D"
+    },
+    {
+        "token0": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x6C9accb05a928d58358cb8a81eF1e87B2D25d0d6"
+    },
+    {
+        "token0": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x6D11F8B920925293e2b5fe56Ff318A9a20168B9d"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x6D3B94C09F8CD996470B7E8aB4CCfD4e1d6444dD"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x708894d1f1DBbCC5599800Ee784658254bC20a62"
+    },
+    {
+        "token0": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "token1": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x709Ee14dd48dB32AA3ab724c49217dc2713232ca"
+    },
+    {
+        "token0": "0x87bA1C836aDB867EFAD3f31AaED8C9E6F73C2510",
+        "token1": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x7219B9136Dfc71d3a72Ee90eF77D0Be9fBf4379C"
+    },
+    {
+        "token0": "0x864d8CBc426b9dC6898fECBcB5d01AeB7FbcBc1F",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x7318DFE9D83450179252f61252b4680f64e2624E"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x7610A0089EA0a41F2b2c5E339227f87315A6D551"
+    },
+    {
+        "token0": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x764Fa0883B09004B76E93A6a6672f83A174B77A9"
+    },
+    {
+        "token0": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "token1": "0x5Fa8F56808F287221E6fA44964c41254C83e0b55",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x7892CD037Ca998Fb08a854D2267E103c1e91340A"
+    },
+    {
+        "token0": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x78D244D3E22e228D680A8F2E8D41CBf6C2FD0631"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x7fc7c5e1211e8bC5b2Be39A144EFfF4B94FCC4B6"
+    },
+    {
+        "token0": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "token1": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x870bEBCac9B15f50bF3B6497Eb208c8A150AE320"
+    },
+    {
+        "token0": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "token1": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x8852dDfD60643B1629D4e8075ddecc99534865c4"
+    },
+    {
+        "token0": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "token1": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x8884d5b55085F6409697C956d60766735A1932F1"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x8887C893b3279232fd17933097CFf3F0B93a1124"
+    },
+    {
+        "token0": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x888F26001922fe2c52caBC647Bfa3dB122338d33"
+    },
+    {
+        "token0": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x8cC1B7609607cfF78aD57E9cF51AF20CA771E256"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x8ce34B5Da38aeDBa4d4f35AdA35D4825b478569d"
+    },
+    {
+        "token0": "0x5Fa8F56808F287221E6fA44964c41254C83e0b55",
+        "token1": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x955CC749F8D30bFe96d2f8c560e6A162d2ED9098"
+    },
+    {
+        "token0": "0x8476C1e3216415a106FC8C05F66FFf75faFCF095",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x993b540910dD38FBF6Ef332a4A6aF18C7F3d315E"
+    },
+    {
+        "token0": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "token1": "0xf0D82b7837fC074B8d349e3cEd773089fA77Fde3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x9Eb9B14fF6b3e4441df02C7fcBCc82F68E55e0FB"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x9f476E89933316779EbEf5EEa17592bd884E8961"
+    },
+    {
+        "token0": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0x9f7a43983cF99509e35ADFB8282c208f41B1378F"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xa069F78D2ab494f859eD39A30706db6FA2D897Fa"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xa0700Abe0e85db53633F162Ac4396f9951D57d10"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x3Faf3B7E1d8CB33F3815E9119D189bB2d42A26b3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xA35576e03179B0D1De32Fad2d25434103D4EbD9B"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xA429B7bf0c1ebF5A3110bC2f8C2150Ddf68Ea05a"
+    },
+    {
+        "token0": "0x0be5c32E08B6d26Cbf399604A1ECbd78217A0080",
+        "token1": "0x3Cf63EB3afE4b4717e78eAe99d632321fc5Ce519",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xA4c4734A19a1ffEc07aCE410e1526235137E5AF7"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x8AfDFfe813826e63AE96A55C86Fd4a48028F3d1a",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xa51e9d7aF07d94b5647D57792e0095e2DBfe6b66"
+    },
+    {
+        "token0": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xA5EE26561ac282Af5edcBd555016F79702f685d9"
+    },
+    {
+        "token0": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "token1": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xa68fAe48f6c532e92E8e07c476DA2EAa1F375c24"
+    },
+    {
+        "token0": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xa8205f7B2050Cd29a6bD7E1A00Db141994dC94f1"
+    },
+    {
+        "token0": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xabB0Ccc0E5C0edEf024e65175935a696eDcdEA4a"
+    },
+    {
+        "token0": "0x8476C1e3216415a106FC8C05F66FFf75faFCF095",
+        "token1": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xAd26bF201fC2eF292d0623B42E5C9230A36Fe5CB"
+    },
+    {
+        "token0": "0x8476C1e3216415a106FC8C05F66FFf75faFCF095",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xB1036eAA7eB2E8a12DEB2fD53368F9757986aC38"
+    },
+    {
+        "token0": "0x8AfDFfe813826e63AE96A55C86Fd4a48028F3d1a",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xB1614Ea3B7844C8271A7ce38A2845aEc2F28EbAF"
+    },
+    {
+        "token0": "0x8476C1e3216415a106FC8C05F66FFf75faFCF095",
+        "token1": "0x87b1ccdbDD975807C96E43414CBB61e13C2b9fC3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xB1AC511E960Dd28dCE5B93e4a6aF216BaBF94388"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0xf0D82b7837fC074B8d349e3cEd773089fA77Fde3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xb1E4b1C20A0A58784f4d68F680A56edDCc013c58"
+    },
+    {
+        "token0": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xb31e05976ab039Cd4808E7c95112DFDE2b5b90aE"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xb3243F6A7D91a35A06Ea9499bc0a8Aa4A873a934"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xb51420a8b2508F1828C1b90d1d39501Cc5344c66"
+    },
+    {
+        "token0": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xb5c0d145F35dEaF69Df6d3D5Df3022Ab39476139"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xb82661D2Ac41359c01bc93d0BEfD3919E2E355e7"
+    },
+    {
+        "token0": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xba676307983599ffAC21c47aBC5CF88D7d4dDE4C"
+    },
+    {
+        "token0": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "token1": "0x9e814822Bfb883b643d2d7a608cbF3Fe4e7DeA74",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xBb6E68BF366A70Db1ECfd1189E1cf11210f31F26"
+    },
+    {
+        "token0": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "token1": "0xf849a0e4f2D0eE73FCDd76d48Bb9D648F1f2F604",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xbbEB3de2eD31755c2f48Aa3Bf38111639Fa926aC"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xbD7b60CddDAF00DC430ca31650D04b458323aa59"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xbe62edE4f012df5dba807adb7213Ee84E08CE293"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xBeE61a813faa9D55b3c09D48d887670dcF3e0865"
+    },
+    {
+        "token0": "0x88bA3fA1f7d371C9a54C812def7542c2E1Dc0feD",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xc1E450cb006A593C7C06E895d8a91164DF610a7F"
+    },
+    {
+        "token0": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xC472bc1bEA15dd3849257C455E90141381bA8874"
+    },
+    {
+        "token0": "0x3Faf3B7E1d8CB33F3815E9119D189bB2d42A26b3",
+        "token1": "0x9e814822Bfb883b643d2d7a608cbF3Fe4e7DeA74",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xc66A392d8F5A25D10d7dAdD94993B2d5CE132fF5"
+    },
+    {
+        "token0": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xC698ad37F6d8a92C778B6C8C1320631589D8E720"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xC7D5A2BA6e417c36F1B0d45A1Fc65a1e5A349FbB"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0x8476C1e3216415a106FC8C05F66FFf75faFCF095",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xCC437c0940365495c0AE34EE3e0f357188f39575"
+    },
+    {
+        "token0": "0x88bA3fA1f7d371C9a54C812def7542c2E1Dc0feD",
+        "token1": "0x8AfDFfe813826e63AE96A55C86Fd4a48028F3d1a",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xCCf4a5c5A8D0257A46d7BB48ea0D820F508c15D4"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xd0eeCF23B5552774efB3d84904388fafE79DD9fA"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xd26937654d753f76dbda16483e2C907287513BBa"
+    },
+    {
+        "token0": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xD2F7C6a0030C3dC20Bf883747ea226b3b27B617B"
+    },
+    {
+        "token0": "0x3Faf3B7E1d8CB33F3815E9119D189bB2d42A26b3",
+        "token1": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xD40f46B96fc3319646A3BE2267A459e7AcCdb5aB"
+    },
+    {
+        "token0": "0x00E77D6a7A56E8eD41B166EE7C3a887CC2FBc213",
+        "token1": "0x356d34daFB474bCFd3BE3C9ebBC5f85238AeA0Ca",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xd8C419779D4aAc3187ddD2aAc2ad1f2151279e46"
+    },
+    {
+        "token0": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "token1": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xD9a0062Cb455C71B8BB75FbDc86956b05CeF3897"
+    },
+    {
+        "token0": "0xb6bB5544C6E43970BB6b0f7eb7b99c45343d206e",
+        "token1": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xDb4fA8cB38CD769178f18C22Dc55591162272F60"
+    },
+    {
+        "token0": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xDDDd2DE0Fd5aB02E649ABe632e8a8a056D9303e2"
+    },
+    {
+        "token0": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "token1": "0xD0549372F1031137da785e0166cd0347Ef32BE05",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xDEEF8b642B56dA91C2b8cbA3b2Fa3b0153D1fd6C"
+    },
+    {
+        "token0": "0x9e814822Bfb883b643d2d7a608cbF3Fe4e7DeA74",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xdFF62b2B52b38b579ba3A9e87085a0a400C26B9d"
+    },
+    {
+        "token0": "0x8CB067473a564F2e72cBcd21d2e2d01CfcB4D222",
+        "token1": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xe3a710CbdB04108ED1A08F9Bb757d25d0A4817Ce"
+    },
+    {
+        "token0": "0x889e3299Dd6eF93716ce8EeB62B9e29c758F0022",
+        "token1": "0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xe4A85f1D3df35232f08C7DE1ac09679CFb2CF5Dc"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x87b1ccdbDD975807C96E43414CBB61e13C2b9fC3",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xEadDC030eb3EB16f4f4b8a0c5024E6e0aCC34de6"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x9Ee409aa1e2Cd2d813e3B2471E00d5260A71b833",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xeDa3F3E98DCFd45cCC0263aA7a111Aa90C1718Ad"
+    },
+    {
+        "token0": "0x8AfDFfe813826e63AE96A55C86Fd4a48028F3d1a",
+        "token1": "0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xEF3D74625b5D5B888d6F25A3dF519b31f1d900B6"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x9e814822Bfb883b643d2d7a608cbF3Fe4e7DeA74",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xEf43Fd018424f08793DF2af4d73417e09099B8Da"
+    },
+    {
+        "token0": "0x8476C1e3216415a106FC8C05F66FFf75faFCF095",
+        "token1": "0xBfbE97A4064360C64580529f3031D97c1380273b",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xEf739d7F5600A03F998B6C1e90444D2F653AAfb0"
+    },
+    {
+        "token0": "0x5B058402961bB852f15eD7c6a705924FB927027A",
+        "token1": "0x8476C1e3216415a106FC8C05F66FFf75faFCF095",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xF0B2Ac65D22321826d861550bb74b5e3e9bbC1A5"
+    },
+    {
+        "token0": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "token1": "0xd82c5eb4B816FCB380Eea196342884782597c613",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xf4bfb6248088295C3fc367D77b5EF3d94F929F0F"
+    },
+    {
+        "token0": "0x8476C1e3216415a106FC8C05F66FFf75faFCF095",
+        "token1": "0x8f98916E6E9Dd5D3d2D3FB3b3a84aacba72BCeF0",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xf996bEf3938816Ccb6c1F446221f8F887e14C39F"
+    },
+    {
+        "token0": "0x1f14016379Df87b0383bbe575209399682e23ced",
+        "token1": "0x5Fa8F56808F287221E6fA44964c41254C83e0b55",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xFAa2783f28834Fa2cC68b2BD3D15A225CcE7e4b2"
+    },
+    {
+        "token0": "0x54aa0689E511D43c6c19B9Ce2EdC2d6aCb3297e5",
+        "token1": "0xDFc050688123a92D822afc050753Db94F2dC6618",
+        "fee_rate": 1000,
+        "decimal": 18,
+        "chainid": 1071,
+        "contract": "0xfDDda63d8BA713777BD5027C5Ad36CC8AF2ca5c9"
+    }
+]
