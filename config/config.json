@@ -1,0 +1,18 @@
+{
+	"http_port": 8080,
+	"db": {
+		"lifetime": 30,
+		"openconns": 200,
+		"idleconns": 100,
+		"host": "",
+		"port": "3306",
+		"dbname": "iotabee-dex",
+		"usr": "root",
+		"pwd": "851012"
+	},
+	"evm_node": {
+		"1071": "https://json-rpc.evm.testnet.shimmer.network/"
+	},
+	"scan_time": 60,
+	"stat_days": 30
+}

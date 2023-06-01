@@ -62,7 +62,7 @@ Get a token by chain id and contract
 Get all pools
 ```
 ### respose
-```json
+```
 See below response of /pools/{chain_id}/all
 ```
 
