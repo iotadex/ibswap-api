@@ -5,6 +5,18 @@
 
 # APIs for ibswap contract of V2
 
+## POST /coins/add
+### param
+```
+symbol: SMR,
+chain_id: 1071,
+contract: 0x4a8b2fbf8d3a0e3c3a8e571e3e6b9e8b5b6e5f5e,
+code: smr,
+type": 0,
+decimal: 18,
+public: 1
+```
+
 ## GET /coins/all
 ```
 Get all the tokens' data.

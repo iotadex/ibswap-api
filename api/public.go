@@ -1,6 +1,7 @@
 package api
 
 import (
+	"ibswap/gl"
 	"ibswap/model"
 	"ibswap/service"
 	"net/http"
@@ -8,6 +9,26 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+func AddToken(c *gin.Context) {
+	symbol := c.PostForm("symbol")
+	chainid, _ := strconv.ParseInt(c.PostForm("chainid"), 10, 64)
+	contract := c.PostForm("contract")
+	code := c.PostForm("code")
+	decimal, err0 := strconv.ParseInt(c.PostForm("decimal"), 10, 64)
+	t, err1 := strconv.ParseInt(c.PostForm("type"), 10, 64)
+	public, err2 := strconv.ParseInt(c.PostForm("public"), 10, 64)
+	if len(symbol) == 0 || chainid == 0 || len(contract) == 0 || len(code) == 0 || err0 != nil || err1 != nil || err2 != nil {
+		gl.OutLogger.Error("Add token params error. %s : %d : %s : %s : %v : %v : %v", symbol, chainid, contract, code, err0, err1, err2)
+	}
+	err := model.AddToken(symbol, chainid, contract, code, decimal, t, public)
+	if err != nil {
+		c.String(http.StatusOK, "OK")
+	} else {
+		gl.OutLogger.Error("Add token to db error. %v", err)
+		c.String(http.StatusOK, "params error")
+	}
+}
 
 func GetAllTokens(c *gin.Context) {
 	coins := model.GetCoins()

@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"log"
+	"sync"
 )
 
 type Coin struct {
@@ -27,6 +28,7 @@ type Pool struct {
 var coinMM map[int64]map[string]*Coin
 var coinsM map[int64][]*Coin
 var coinsS []*Coin
+var coinsMu sync.RWMutex
 
 var poolMM map[int64]map[string]*Pool
 var poolsM map[int64][]*Pool
@@ -37,7 +39,23 @@ func initCoinsAndPools() {
 	getPools()
 }
 
+func AddToken(symbol string, chainid int64, contract, code string, decimal, t, public int64) error {
+	if _, err := db.Exec("insert into token(`symbol`,`chainid`,`contract`,`code`,`deci`,`type`,`public`) values(?,?,?,?,?,?,?)", symbol, chainid, contract, code, decimal, t, public); err != nil {
+		return err
+	}
+	c := Coin{}
+	c.Symbol, c.ChainID, c.Contract, c.Code, c.Decimal, c.Type, c.Public = symbol, chainid, contract, code, int(decimal), int(t), int(public)
+	coinsMu.Lock()
+	defer coinsMu.Unlock()
+	coinMM[c.ChainID][c.Contract] = &c
+	coinsM[c.ChainID] = append(coinsM[c.ChainID], &c)
+	coinsS = append(coinsS, &c)
+	return nil
+}
+
 func GetCoin(chainid int64, symbol string) (*Coin, error) {
+	coinsMu.RLock()
+	defer coinsMu.RUnlock()
 	if c, exist := coinMM[chainid][symbol]; exist {
 		return c, nil
 	} else {
@@ -46,10 +64,14 @@ func GetCoin(chainid int64, symbol string) (*Coin, error) {
 }
 
 func GetCoinsByChainId(chainid int64) []*Coin {
+	coinsMu.RLock()
+	defer coinsMu.RUnlock()
 	return coinsM[chainid]
 }
 
 func GetCoins() []*Coin {
+	coinsMu.RLock()
+	defer coinsMu.RUnlock()
 	return coinsS
 }
 

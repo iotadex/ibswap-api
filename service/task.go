@@ -103,6 +103,8 @@ func dealTick(pool *EvmPool) {
 type PoolOverview struct {
 	ChainID      int64  `json:"chainid"`
 	Contract     string `json:"contract"`
+	Token0       string `json:"token0"`
+	Token1       string `json:"token1"`
 	Reserve0     string `json:"reserve0"`
 	Reserve1     string `json:"reserve1"`
 	Volume24H0   string `json:"volume24h0"`
@@ -123,6 +125,8 @@ func OverviewPoolsByChainid(chainid int64) []PoolOverview {
 		ps = append(ps, PoolOverview{
 			ChainID:      chainid,
 			Contract:     p.Contract,
+			Token0:       p.Token0,
+			Token1:       p.Token1,
 			Reserve0:     currReserve[0].String(),
 			Reserve1:     currReserve[1].String(),
 			Volume24H0:   vol24H.amount0.String(),
@@ -136,7 +140,7 @@ func OverviewPoolsByChainid(chainid int64) []PoolOverview {
 }
 
 func OverviewPoolsByChainidAndContract(chainid int64, contract string) (*PoolOverview, error) {
-	_, err := model.GetPool(chainid, contract)
+	p, err := model.GetPool(chainid, contract)
 	if err != nil {
 		return nil, err
 	}
@@ -147,6 +151,8 @@ func OverviewPoolsByChainidAndContract(chainid int64, contract string) (*PoolOve
 	return &PoolOverview{
 		ChainID:      chainid,
 		Contract:     contract,
+		Token0:       p.Token0,
+		Token1:       p.Token1,
 		Reserve0:     currReserve[0].String(),
 		Reserve1:     currReserve[1].String(),
 		Volume24H0:   vol24H.amount0.String(),

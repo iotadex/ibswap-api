@@ -57,6 +57,7 @@ func InitRouter() *gin.Engine {
 	dex := gin.New()
 	dex.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: GinLogger}), gin.Recovery())
 	{
+		dex.POST("/coins/add", AddToken)
 		dex.GET("/coins/all", GetAllTokens)
 		dex.GET("/coins/:chain_id/all", GetAllTokensByChain)
 		dex.GET("/coins/:chain_id/:contract", GetTokenByChainAndContract)
