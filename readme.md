@@ -16,6 +16,10 @@ type": 0,
 decimal: 18,
 public: 1
 ```
+### Respose
+```
+OK
+```
 
 ## GET /coins/all
 ```
