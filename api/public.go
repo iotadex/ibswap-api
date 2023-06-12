@@ -20,6 +20,8 @@ func AddToken(c *gin.Context) {
 	public, err2 := strconv.ParseInt(c.PostForm("public"), 10, 64)
 	if len(symbol) == 0 || chainid == 0 || len(contract) == 0 || len(code) == 0 || err0 != nil || err1 != nil || err2 != nil {
 		gl.OutLogger.Error("Add token params error. %s : %d : %s : %s : %v : %v : %v", symbol, chainid, contract, code, err0, err1, err2)
+		c.String(http.StatusOK, "params error")
+		return
 	}
 	err := model.AddToken(symbol, chainid, contract, code, decimal, t, public)
 	if err != nil {
@@ -54,13 +56,22 @@ func GetTokenByChainAndContract(c *gin.Context) {
 	}
 }
 
-func GetAllPools(c *gin.Context) {
-	c.JSON(http.StatusOK, model.GetPools())
+func GetAllV2Pools(c *gin.Context) {
+	c.JSON(http.StatusOK, model.GetPools(2))
 }
 
-func GetAllPoolsByChain(c *gin.Context) {
+func GetAllV3Pools(c *gin.Context) {
+	c.JSON(http.StatusOK, model.GetPools(3))
+}
+
+func GetAllV2PoolsByChain(c *gin.Context) {
 	chainID, _ := strconv.ParseInt(c.Param("chain_id"), 10, 64)
-	c.JSON(http.StatusOK, model.GetPoolsByChainId(chainID))
+	c.JSON(http.StatusOK, model.GetPoolsByChainId(chainID, 2))
+}
+
+func GetAllV3PoolsByChain(c *gin.Context) {
+	chainID, _ := strconv.ParseInt(c.Param("chain_id"), 10, 64)
+	c.JSON(http.StatusOK, model.GetPoolsByChainId(chainID, 3))
 }
 
 func GetPoolByChainAndContract(c *gin.Context) {
@@ -75,9 +86,15 @@ func GetPoolByChainAndContract(c *gin.Context) {
 	}
 }
 
-func OverviewAllPoolsByChain(c *gin.Context) {
+func OverviewAllV2PoolsByChain(c *gin.Context) {
 	chainID, _ := strconv.ParseInt(c.Param("chain_id"), 10, 64)
-	ps := service.OverviewPoolsByChainid(chainID)
+	ps := service.OverviewPoolsByChainid(chainID, 2)
+	c.JSON(http.StatusOK, ps)
+}
+
+func OverviewAllV3PoolsByChain(c *gin.Context) {
+	chainID, _ := strconv.ParseInt(c.Param("chain_id"), 10, 64)
+	ps := service.OverviewPoolsByChainid(chainID, 3)
 	c.JSON(http.StatusOK, ps)
 }
 
@@ -102,5 +119,18 @@ func StatPoolByChainAndContract(c *gin.Context) {
 		})
 	} else {
 		c.JSON(http.StatusOK, ps)
+	}
+}
+
+func GetNftTokensByUser(c *gin.Context) {
+	user := c.Param("user")
+	collection := c.Param("collection")
+	if ts, err := model.GetNftTokens(user, collection); err != nil {
+		gl.OutLogger.Error("GetNftTokens error. %s : %s : %v", user, collection, err)
+		c.JSON(http.StatusOK, gin.H{
+			"error": "There is no NftToken: " + user + " : " + collection,
+		})
+	} else {
+		c.JSON(http.StatusOK, ts)
 	}
 }

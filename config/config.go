@@ -15,10 +15,15 @@ type db struct {
 	Pwd    string `json:"pwd"`
 }
 
+type evmNode struct {
+	Url string `json:"url"`
+	Nft string `json:"nft"`
+}
+
 var (
 	Db       db
 	HttpPort int
-	EvmNodes map[int64]string //chainid : url
+	EvmNodes map[int64]evmNode //chainid : url
 	ScanTime time.Duration
 	StatDays int64
 )
@@ -31,11 +36,11 @@ func init() {
 	}
 	defer file.Close()
 	type Config struct {
-		HttpPort int              `json:"http_port"`
-		Db       db               `json:"db"`
-		EvmNodes map[int64]string `json:"evm_node"`
-		ScanTime time.Duration    `json:"scan_time"`
-		StatDays int64            `json:"stat_days"`
+		HttpPort int               `json:"http_port"`
+		Db       db                `json:"db"`
+		EvmNodes map[int64]evmNode `json:"evm_node"`
+		ScanTime time.Duration     `json:"scan_time"`
+		StatDays int64             `json:"stat_days"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {

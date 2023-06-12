@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-func StorePoolVolume(id, chainid int64, contract string, r0, r1 string, v0, v1 string) error {
-	_, err := db.Exec("insert into volume(`id`,`chainid`,`contract`,`reserve0`,`reserve1`,`vol0`,`vol1`) values(?,?,?,?,?,?,?)", id, chainid, contract, r0, r1, v0, v1)
+func StorePoolVolume(id, chainid int64, contract string, tick int64, r0, r1 string, v0, v1 string) error {
+	_, err := db.Exec("insert into volume(`id`,`chainid`,`contract`,`tick`,`reserve0`,`reserve1`,`vol0`,`vol1`) values(?,?,?,?,?,?,?,?)", id, chainid, contract, tick, r0, r1, v0, v1)
 	return err
 }
 

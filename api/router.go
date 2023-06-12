@@ -27,7 +27,7 @@ func StartHttpServer() {
 	// it won't block the graceful shutdown handling
 	go func() {
 		if err := httpServer.ListenAndServe(); err != nil && errors.Is(err, http.ErrServerClosed) {
-			log.Printf("listen: %v\n", err)
+			log.Panicf("listen: %v\n", err)
 		}
 	}()
 }
@@ -54,23 +54,44 @@ func InitRouter() *gin.Engine {
 	}
 
 	gin.SetMode(gin.ReleaseMode)
-	dex := gin.New()
-	dex.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: GinLogger}), gin.Recovery())
+	api := gin.New()
+	api.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: GinLogger}), gin.Recovery())
 	{
-		dex.POST("/coins/add", AddToken)
-		dex.GET("/coins/all", GetAllTokens)
-		dex.GET("/coins/:chain_id/all", GetAllTokensByChain)
-		dex.GET("/coins/:chain_id/:contract", GetTokenByChainAndContract)
-
-		dex.GET("/pools/all", GetAllPools)
-		dex.GET("/pools/:chain_id/all", GetAllPoolsByChain)
-		dex.GET("/pools/:chain_id/:contract", GetPoolByChainAndContract)
-		dex.GET("/pools/:chain_id/overview", OverviewAllPoolsByChain)
-		dex.GET("/pools/:chain_id/:contract/overview", OverviewPoolByChainAndContract)
-		dex.GET("/pools/:chain_id/:contract/time-stats", StatPoolByChainAndContract)
+		api.GET("/pools/all", GetAllV2Pools)
+		api.GET("/pools/:chain_id/all", GetAllV2PoolsByChain)
+		api.GET("/pools/:chain_id/:contract", GetPoolByChainAndContract)
+		api.GET("/pools/:chain_id/overview", OverviewAllV2PoolsByChain)
+		api.GET("/pools/:chain_id/:contract/overview", OverviewPoolByChainAndContract)
+		api.GET("/pools/:chain_id/:contract/time-stats", StatPoolByChainAndContract)
+	}
+	coins := api.Group("/coins")
+	{
+		coins.POST("/add", AddToken)
+		coins.GET("/all", GetAllTokens)
+		coins.GET("/:chain_id/all", GetAllTokensByChain)
+		coins.GET("/:chain_id/:contract", GetTokenByChainAndContract)
+	}
+	v2 := api.Group("/v2")
+	{
+		v2.GET("/pools/all", GetAllV2Pools)
+		v2.GET("/pools/:chain_id/all", GetAllV2PoolsByChain)
+		v2.GET("/pools/:chain_id/:contract", GetPoolByChainAndContract)
+		v2.GET("/pools/:chain_id/overview", OverviewAllV2PoolsByChain)
+		v2.GET("/pools/:chain_id/:contract/overview", OverviewPoolByChainAndContract)
+		v2.GET("/pools/:chain_id/:contract/time-stats", StatPoolByChainAndContract)
+	}
+	v3 := api.Group("/v3")
+	{
+		v3.GET("/pools/all", GetAllV3Pools)
+		v3.GET("/pools/:chain_id/all", GetAllV3PoolsByChain)
+		v3.GET("/pools/:chain_id/:contract", GetPoolByChainAndContract)
+		v3.GET("/pools/:chain_id/overview", OverviewAllV3PoolsByChain)
+		v3.GET("/pools/:chain_id/:contract/overview", OverviewPoolByChainAndContract)
+		v3.GET("/pools/:chain_id/:contract/time-stats", StatPoolByChainAndContract)
+		v3.GET("/nfts/:user/:collection", GetNftTokensByUser)
 	}
 
-	return dex
+	return api
 }
 
 func Test(c *gin.Context) {

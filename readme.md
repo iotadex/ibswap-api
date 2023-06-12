@@ -3,7 +3,7 @@
     https://dex.iotabee.com
 ```
 
-# APIs for ibswap contract of V2
+# APIs for ibswap contract of V2 and V3
 
 ## POST /coins/add
 ### param
@@ -73,7 +73,7 @@ Get a token by chain id and contract
 }
 ```
 
-## GET /pools/all
+## GET v3/pools/all
 ```
 Get all pools
 ```
@@ -82,7 +82,7 @@ Get all pools
 See below response of /pools/{chain_id}/all
 ```
 
-## GET /pools/{chain_id}/all
+## GET v3/pools/{chain_id}/all
 ### respose
 ```json
 [
@@ -97,7 +97,7 @@ See below response of /pools/{chain_id}/all
 ]
 ```
 
-## GET /pools/{chain_id}/{contract}
+## GET v3/pools/{chain_id}/{contract}
 ### respose
 ```json
 {
@@ -110,7 +110,7 @@ See below response of /pools/{chain_id}/all
 }
 ```
 
-## GET /pools/{chain_id}/overview
+## GET v3/pools/{chain_id}/overview
 ```
 Get the overview of all pools by chain id
 ```
@@ -131,7 +131,7 @@ Get the overview of all pools by chain id
 ]
 ```
 
-## GET /pools/{chain_id}/{contract}/overview
+## GET v3/pools/{chain_id}/{contract}/overview
 ### respose
 ```json
 {
@@ -147,7 +147,7 @@ Get the overview of all pools by chain id
  }
 ```
 
-## GET /pools/{chain_id}/{contract}/time-stats
+## GET v3/pools/{chain_id}/{contract}/time-stats
 ### respose
 ```json
 [
@@ -171,6 +171,25 @@ Get the overview of all pools by chain id
         "vol07d":"14541618899316988008234",
         "vol17d":"14541618899316988008234"
     },
+]
+```
+
+## GET v3/nfts/{user}/{collection}
+```
+Get all the nfts belong to user. collection if the nft's contract address
+```
+### respose
+```json
+[
+    {
+        "tokenid":"4",
+        "collection":"0xEe610aE2b68b5549F231bf9152FFA2907a09ABC8",
+        "user":"0x9A2c058A5020FAC6e316f11A0f1075DC930ac720",
+        "pool":"0x99381366B094Cb94e88423A5cF604CFe536793dA",
+        "token0":"0xc9f3a2C8a5C05FDbE086549de9DD9954ACA7BD22",
+        "token1":"0xdcC4E969F081C3E967581Aa9175EF6F0a337Ae88",
+        "fee":10000,
+    }
 ]
 ```
 

@@ -19,6 +19,7 @@ type Coin struct {
 type Pool struct {
 	ChainID  int64  `json:"chainid"`
 	Contract string `json:"contract"`
+	Version  int8
 	Token0   string `json:"token0"`
 	Token1   string `json:"token1"`
 	FeeRate  int    `json:"fee_rate"`
@@ -30,9 +31,14 @@ var coinsM map[int64][]*Coin
 var coinsS []*Coin
 var coinsMu sync.RWMutex
 
-var poolMM map[int64]map[string]*Pool
-var poolsM map[int64][]*Pool
-var poolsS []*Pool
+var poolMMV2 map[int64]map[string]*Pool
+var poolsMV2 map[int64][]*Pool
+var poolsSV2 []*Pool
+
+var poolMMV3 map[int64]map[string]*Pool
+var poolsMV3 map[int64][]*Pool
+var poolsSV3 []*Pool
+var poolMMM map[string]map[string]map[int]*Pool //token0->token1->fee->Pool
 
 func initCoinsAndPools() {
 	getCoins()
@@ -76,19 +82,34 @@ func GetCoins() []*Coin {
 }
 
 func GetPool(chainId int64, contract string) (*Pool, error) {
-	if c, exist := poolMM[chainId][contract]; exist {
-		return c, nil
-	} else {
-		return c, fmt.Errorf("pool %s+%d is not exist", contract, chainId)
+	if p, exist := poolMMV2[chainId][contract]; exist {
+		return p, nil
 	}
+	if p, exist := poolMMV3[chainId][contract]; exist {
+		return p, nil
+	}
+	return nil, nil
 }
 
-func GetPoolsByChainId(chainid int64) []*Pool {
-	return poolsM[chainid]
+func GetPoolByTokensAndFee(token0, token1 string, fee int) *Pool {
+	if p, exist := poolMMM[token0][token1][fee]; exist {
+		return p
+	}
+	return nil
 }
 
-func GetPools() []*Pool {
-	return poolsS
+func GetPoolsByChainId(chainid int64, v int8) []*Pool {
+	if v == 2 {
+		return poolsMV2[chainid]
+	}
+	return poolsMV3[chainid]
+}
+
+func GetPools(v int8) []*Pool {
+	if v == 2 {
+		return poolsSV2
+	}
+	return poolsSV3
 }
 
 func getCoins() {
@@ -116,25 +137,37 @@ func getCoins() {
 }
 
 func getPools() {
-	poolMM = make(map[int64]map[string]*Pool)
-	poolsM = make(map[int64][]*Pool)
-	poolsS = make([]*Pool, 0)
-	rows, err := db.Query("select `chainid`,`contract`,`token0`,`token1`,`fee_rate`,`deci` from `pool`")
+	poolMMV2 = make(map[int64]map[string]*Pool)
+	poolsMV2 = make(map[int64][]*Pool)
+	poolsSV2 = make([]*Pool, 0)
+	poolMMV3 = make(map[int64]map[string]*Pool)
+	poolsMV3 = make(map[int64][]*Pool)
+	poolsSV3 = make([]*Pool, 0)
+	rows, err := db.Query("select `chainid`,`contract`,`version`,`token0`,`token1`,`fee_rate`,`deci` from `pool`")
 	if err != nil {
 		log.Printf("Get pools from db error. %v\n", err)
 		return
 	}
 	for rows.Next() {
 		p := Pool{}
-		if err = rows.Scan(&p.ChainID, &p.Contract, &p.Token0, &p.Token1, &p.FeeRate, &p.Decimal); err != nil {
+		if err = rows.Scan(&p.ChainID, &p.Contract, &p.Version, &p.Token0, &p.Token1, &p.FeeRate, &p.Decimal); err != nil {
 			log.Printf("Scan pool from db error. %v\n", err)
 			continue
 		}
-		if _, exist := poolMM[p.ChainID]; !exist {
-			poolMM[p.ChainID] = make(map[string]*Pool)
+		if p.Version == 2 {
+			if _, exist := poolMMV2[p.ChainID]; !exist {
+				poolMMV2[p.ChainID] = make(map[string]*Pool)
+			}
+			poolMMV2[p.ChainID][p.Contract] = &p
+			poolsMV2[p.ChainID] = append(poolsMV2[p.ChainID], &p)
+			poolsSV2 = append(poolsSV2, &p)
+		} else if p.Version == 3 {
+			if _, exist := poolMMV3[p.ChainID]; !exist {
+				poolMMV3[p.ChainID] = make(map[string]*Pool)
+			}
+			poolMMV3[p.ChainID][p.Contract] = &p
+			poolsMV3[p.ChainID] = append(poolsMV3[p.ChainID], &p)
+			poolsSV3 = append(poolsSV3, &p)
 		}
-		poolMM[p.ChainID][p.Contract] = &p
-		poolsM[p.ChainID] = append(poolsM[p.ChainID], &p)
-		poolsS = append(poolsS, &p)
 	}
 }

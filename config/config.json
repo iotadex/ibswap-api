@@ -11,8 +11,11 @@
 		"pwd": "851012"
 	},
 	"evm_node": {
-		"1071": "https://json-rpc.evm.testnet.shimmer.network/"
+		"1071": {
+			"url": "https://json-rpc.evm.testnet.shimmer.network/",
+			"nft": "0xEe610aE2b68b5549F231bf9152FFA2907a09ABC8"
+		}
 	},
-	"scan_time": 60,
+	"scan_time": 120,
 	"stat_days": 30
 }
