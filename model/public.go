@@ -46,7 +46,7 @@ func initCoinsAndPools() {
 }
 
 func AddToken(symbol string, chainid int64, contract, code string, decimal, t, public int64) error {
-	if _, err := db.Exec("insert into token(`symbol`,`chainid`,`contract`,`code`,`deci`,`type`,`public`) values(?,?,?,?,?,?,?)", symbol, chainid, contract, code, decimal, t, public); err != nil {
+	if _, err := db.Exec("insert into `token`(`symbol`,`chainid`,`contract`,`code`,`deci`,`type`,`public`) values(?,?,?,?,?,?,?)", symbol, chainid, contract, code, decimal, t, public); err != nil {
 		return err
 	}
 	c := Coin{}
@@ -56,6 +56,32 @@ func AddToken(symbol string, chainid int64, contract, code string, decimal, t, p
 	coinMM[c.ChainID][c.Contract] = &c
 	coinsM[c.ChainID] = append(coinsM[c.ChainID], &c)
 	coinsS = append(coinsS, &c)
+	return nil
+}
+
+func AddPool(chainid int64, contract string, version int64, token0, token1 string, feeRate int64) error {
+	if _, err := db.Exec("insert into `pool`(`chainid`,`contract`,`version`,`token0`,`token1`,`fee_rate`) values(?,?,?,?,?,?)", chainid, contract, version, token0, token1, feeRate); err != nil {
+		return err
+	}
+	p := Pool{
+		ChainID:  chainid,
+		Contract: contract,
+		Version:  int8(version),
+		Token0:   token0,
+		Token1:   token1,
+		FeeRate:  int(feeRate),
+		Decimal:  18,
+	}
+	poolMMV3[chainid][contract] = &p
+	poolsMV3[chainid] = append(poolsMV3[chainid], &p)
+	poolsSV3 = append(poolsSV3, &p)
+	if _, exist := poolMMM[p.Token0]; !exist {
+		poolMMM[p.Token0] = make(map[string]map[int]*Pool)
+	}
+	if _, exist := poolMMM[p.Token0][p.Token1]; !exist {
+		poolMMM[p.Token0][p.Token1] = make(map[int]*Pool)
+	}
+	poolMMM[p.Token0][p.Token1][p.FeeRate] = &p
 	return nil
 }
 
@@ -143,6 +169,7 @@ func getPools() {
 	poolMMV3 = make(map[int64]map[string]*Pool)
 	poolsMV3 = make(map[int64][]*Pool)
 	poolsSV3 = make([]*Pool, 0)
+	poolMMM = make(map[string]map[string]map[int]*Pool)
 	rows, err := db.Query("select `chainid`,`contract`,`version`,`token0`,`token1`,`fee_rate`,`deci` from `pool`")
 	if err != nil {
 		log.Printf("Get pools from db error. %v\n", err)
@@ -168,6 +195,13 @@ func getPools() {
 			poolMMV3[p.ChainID][p.Contract] = &p
 			poolsMV3[p.ChainID] = append(poolsMV3[p.ChainID], &p)
 			poolsSV3 = append(poolsSV3, &p)
+			if _, exist := poolMMM[p.Token0]; !exist {
+				poolMMM[p.Token0] = make(map[string]map[int]*Pool)
+			}
+			if _, exist := poolMMM[p.Token0][p.Token1]; !exist {
+				poolMMM[p.Token0][p.Token1] = make(map[int]*Pool)
+			}
+			poolMMM[p.Token0][p.Token1][p.FeeRate] = &p
 		}
 	}
 }

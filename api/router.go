@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"errors"
+	"ibswap/api/middleware"
 	"ibswap/config"
 	"log"
 	"net/http"
@@ -89,6 +90,11 @@ func InitRouter() *gin.Engine {
 		v3.GET("/pools/:chain_id/:contract/overview", OverviewPoolByChainAndContract)
 		v3.GET("/pools/:chain_id/:contract/time-stats", StatPoolByChainAndContract)
 		v3.GET("/nfts/:user/:collection", GetNftTokensByUser)
+	}
+
+	admin := api.Group("/admin").Use(middleware.VerifySignature)
+	{
+		admin.POST("/pool/add", AddPool)
 	}
 
 	return api

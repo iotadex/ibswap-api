@@ -21,7 +21,7 @@ func Start() {
 }
 
 func start(v int8) {
-	pools := model.GetPools(2)
+	pools := model.GetPools(v)
 	for _, p := range pools {
 		key := p.Contract + strconv.FormatInt(p.ChainID, 10)
 		//initial volumes24H
@@ -38,18 +38,18 @@ func start(v int8) {
 		if day, rs, err := model.GetLatestUtc0Reserves(p.ChainID, p.Contract); err != nil {
 			panic(err)
 		} else {
-			utc0Reserves[key].set(rs[0], rs[1])
+			utc0Reserves[key].set(rs[0], rs[1], 0)
 			utc0Reserves[key].day = day
 		}
 		//inital currReserves
 		currReserves[key] = &Reserves{}
-		if rs, err := model.GetLatestReserves(p.ChainID, p.Contract); err != nil {
+		if rs, tick, err := model.GetLatestReserves(p.ChainID, p.Contract); err != nil {
 			panic(err)
 		} else {
-			currReserves[key].set(rs[0], rs[1])
+			currReserves[key].set(rs[0], rs[1], tick)
 		}
 
-		pool := NewEvmPool(p.ChainID, config.EvmNodes[p.ChainID].Url, p.Contract)
+		pool := NewEvmPool(p.ChainID, config.EvmNodes[p.ChainID].Url, p.Contract, p.Token0, p.Token1)
 		go dealTick(pool, v)
 		time.Sleep(time.Second)
 	}
@@ -57,7 +57,7 @@ func start(v int8) {
 
 func startNft() {
 	for chainid, node := range config.EvmNodes {
-		nft := NewEvmPool(chainid, node.Url, node.Nft)
+		nft := NewEvmPool(chainid, node.Url, node.Nft, "0x0", "0x0")
 		go dealNft(nft)
 		time.Sleep(time.Second)
 	}
@@ -76,13 +76,13 @@ func dealTick(pool *EvmPool, v int8) {
 			//1. set current reserves
 			if tick.Reserve0.Cmp(zero) != 0 {
 				preReserve0, preReserve1 = tick.Reserve0, tick.Reserve1
-				currReserves[key].set(preReserve0, preReserve1)
+				currReserves[key].set(preReserve0, preReserve1, tick.Tick)
 			}
 
 			//2. update utc0 reserves
 			currDay := time.Now().Unix() / 86400
 			if utc0Reserves[key].day != currDay {
-				utc0Reserves[key].set(preReserve0, preReserve1)
+				utc0Reserves[key].set(preReserve0, preReserve1, tick.Tick)
 				utc0Reserves[key].day = currDay
 
 				// count the last days's volume
@@ -122,6 +122,7 @@ func dealNft(nft *EvmPool) {
 		case log := <-chLog:
 			gl.OutLogger.Error(log)
 		case nftToken := <-chNftToken:
+			gl.OutLogger.Info("NFT token record. %v", nftToken)
 			if nftToken.direction == -1 {
 				if err := model.DeleteNftToken(nftToken.tokenId, nftToken.collection); err != nil {
 					gl.OutLogger.Error("Delete nft token error. %v : %v", nftToken, err)
@@ -148,6 +149,7 @@ type PoolOverview struct {
 	Token1       string `json:"token1"`
 	Reserve0     string `json:"reserve0"`
 	Reserve1     string `json:"reserve1"`
+	Tick         int64  `json:"tick"`
 	Volume24H0   string `json:"volume24h0"`
 	Volume24H1   string `json:"volume24h1"`
 	Utc0Reserve0 string `json:"utc0reserve0"`
@@ -160,9 +162,9 @@ func OverviewPoolsByChainid(chainid int64, v int8) []PoolOverview {
 	ps := make([]PoolOverview, 0)
 	for _, p := range pools {
 		key := p.Contract + strconv.FormatInt(chainid, 10)
-		currReserve := currReserves[key].get()
+		currReserve, currTick := currReserves[key].get()
 		vol24H := volumes24H[key].get24HVolume()
-		utc0Reserve := utc0Reserves[key].get()
+		utc0Reserve, _ := utc0Reserves[key].get()
 		ps = append(ps, PoolOverview{
 			ChainID:      chainid,
 			Contract:     p.Contract,
@@ -170,6 +172,7 @@ func OverviewPoolsByChainid(chainid int64, v int8) []PoolOverview {
 			Token1:       p.Token1,
 			Reserve0:     currReserve[0].String(),
 			Reserve1:     currReserve[1].String(),
+			Tick:         currTick,
 			Volume24H0:   vol24H.amount0.String(),
 			Volume24H1:   vol24H.amount1.String(),
 			Utc0Reserve0: utc0Reserve[0].String(),
@@ -186,9 +189,9 @@ func OverviewPoolsByChainidAndContract(chainid int64, contract string) (*PoolOve
 		return nil, err
 	}
 	key := contract + strconv.FormatInt(chainid, 10)
-	currReserve := currReserves[key].get()
+	currReserve, currTick := currReserves[key].get()
 	vol24H := volumes24H[key].get24HVolume()
-	utc0Reserve := utc0Reserves[key].get()
+	utc0Reserve, _ := utc0Reserves[key].get()
 	return &PoolOverview{
 		ChainID:      chainid,
 		Contract:     contract,
@@ -196,6 +199,7 @@ func OverviewPoolsByChainidAndContract(chainid int64, contract string) (*PoolOve
 		Token1:       p.Token1,
 		Reserve0:     currReserve[0].String(),
 		Reserve1:     currReserve[1].String(),
+		Tick:         currTick,
 		Volume24H0:   vol24H.amount0.String(),
 		Volume24H1:   vol24H.amount1.String(),
 		Utc0Reserve0: utc0Reserve[0].String(),

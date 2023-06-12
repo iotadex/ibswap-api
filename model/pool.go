@@ -36,21 +36,22 @@ func Get24hVolumes(chainid int64, contract string) ([]int64, [][2]*big.Int, erro
 	return ids, vols, nil
 }
 
-func GetLatestReserves(chainid int64, c string) ([2]*big.Int, error) {
-	row := db.QueryRow("select `reserve0`,`reserve1` from `volume` where `chainid`=? and `contract`=? order by `id` desc limit 1", chainid, c)
+func GetLatestReserves(chainid int64, c string) ([2]*big.Int, int64, error) {
+	row := db.QueryRow("select `reserve0`,`reserve1`,`tick` from `volume` where `chainid`=? and `contract`=? order by `id` desc limit 1", chainid, c)
 	var r0, r1 string
-	if err := row.Scan(&r0, &r1); err != nil {
+	var tick int64
+	if err := row.Scan(&r0, &r1, &tick); err != nil {
 		if err == sql.ErrNoRows {
-			return [2]*big.Int{big.NewInt(0), big.NewInt(0)}, nil
+			return [2]*big.Int{big.NewInt(0), big.NewInt(0)}, 0, nil
 		}
-		return [2]*big.Int{}, fmt.Errorf("scan LatestReserves from db error. %v", err)
+		return [2]*big.Int{}, 0, fmt.Errorf("scan LatestReserves from db error. %v", err)
 	}
 	reserve0, b0 := new(big.Int).SetString(r0, 10)
 	reserve1, b1 := new(big.Int).SetString(r1, 10)
 	if !b0 || !b1 {
-		return [2]*big.Int{}, fmt.Errorf("scan Utc0Reserves from db error. %s : %s", r0, r1)
+		return [2]*big.Int{}, 0, fmt.Errorf("scan Utc0Reserves from db error. %s : %s", r0, r1)
 	}
-	return [2]*big.Int{reserve0, reserve1}, nil
+	return [2]*big.Int{reserve0, reserve1}, tick, nil
 }
 
 func GetLatestUtc0Reserves(chainid int64, c string) (int64, [2]*big.Int, error) {

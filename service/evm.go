@@ -56,11 +56,13 @@ type EvmPool struct {
 	token1   common.Address
 }
 
-func NewEvmPool(chainid int64, url, con string) *EvmPool {
+func NewEvmPool(chainid int64, url, con, t0, t1 string) *EvmPool {
 	return &EvmPool{
 		chainid:  chainid,
 		nodeUrl:  url,
 		contract: common.HexToAddress(con),
+		token0:   common.HexToAddress(t0),
+		token1:   common.HexToAddress(t1),
 	}
 }
 
@@ -92,7 +94,7 @@ func (t *EvmPool) startListenV2() (chan string, chan PoolStat) {
 	chOrder := make(chan PoolStat, 10)
 
 	go func() {
-		log.Default().Printf("Start to scan %d : %s ...\n", t.chainid, t.contract.Hex())
+		log.Default().Printf("Start to scan V2 %d : %s ...\n", t.chainid, t.contract.Hex())
 		for {
 			time.Sleep(config.ScanTime * time.Second)
 			var toHeight uint64
@@ -215,8 +217,10 @@ func (t *EvmPool) startListenV3() (chan string, chan PoolStat) {
 					if len(logs[i].Data) < 160 {
 						chLog <- fmt.Sprintf("Swap Event Data error. %v", hex.EncodeToString(logs[i].Data))
 					}
-					amount0.Abs(new(big.Int).SetBytes(logs[i].Data[:32]))
-					amount1.Abs(new(big.Int).SetBytes(logs[i].Data[32:64]))
+					a1 := new(big.Int).SetBytes(logs[i].Data[:32])
+					a2 := (new(big.Int).SetBytes(logs[i].Data[32:64]))
+					amount0.Add(amount0, a1.Abs(a1))
+					amount1.Add(amount1, a2.Abs(a2))
 					tick = new(big.Int).SetBytes(logs[i].Data[128:]).Int64()
 				}
 			}
