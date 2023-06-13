@@ -26,7 +26,11 @@ var EventMintV3 = crypto.Keccak256Hash([]byte("Mint(address,address,int24,int24,
 var EventBurnV3 = crypto.Keccak256Hash([]byte("Burn(address,int24,int24,uint128,uint256,uint256)"))
 
 // event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+// event IncreaseLiquidity(uint256 indexed tokenId,uint128 liquidity,uint256 amount0,uint256 amount1);
+// event DecreaseLiquidity(uint256 indexed tokenId,uint128 liquidity,uint256 amount0,uint256 amount1);
 var EventTransferNFT = crypto.Keccak256Hash([]byte("Transfer(address,address,uint256)"))
+var EventIncreaseLiq = crypto.Keccak256Hash([]byte("IncreaseLiquidity(uint256,uint128,uint256,uint256)"))
+var EventDecreaseLiq = crypto.Keccak256Hash([]byte("DecreaseLiquidity(uint256,uint128,uint256,uint256)"))
 
 type PoolStat struct {
 	Reserve0 *big.Int
