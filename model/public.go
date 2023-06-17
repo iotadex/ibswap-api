@@ -59,7 +59,7 @@ func AddToken(symbol string, chainid int64, contract, code string, decimal, t, p
 	return nil
 }
 
-func AddPool(chainid int64, contract string, version int64, token0, token1 string, feeRate int64) error {
+func AddPool(chainid int64, contract string, version int64, token0, token1 string, feeRate int) error {
 	if _, err := db.Exec("insert into `pool`(`chainid`,`contract`,`version`,`token0`,`token1`,`fee_rate`) values(?,?,?,?,?,?)", chainid, contract, version, token0, token1, feeRate); err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func AddPool(chainid int64, contract string, version int64, token0, token1 strin
 		Version:  int8(version),
 		Token0:   token0,
 		Token1:   token1,
-		FeeRate:  int(feeRate),
+		FeeRate:  feeRate,
 		Decimal:  18,
 	}
 	poolMMV3[chainid][contract] = &p

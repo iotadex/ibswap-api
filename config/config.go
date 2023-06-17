@@ -16,8 +16,10 @@ type db struct {
 }
 
 type evmNode struct {
-	Url string `json:"url"`
-	Nft string `json:"nft"`
+	Url      string `json:"url"`
+	Nft      string `json:"nft"`
+	Factory  string `json:"factory"`
+	InitCode string `json:"init_code"`
 }
 
 var (

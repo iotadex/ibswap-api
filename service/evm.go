@@ -32,6 +32,9 @@ var EventTransferNFT = crypto.Keccak256Hash([]byte("Transfer(address,address,uin
 var EventIncreaseLiq = crypto.Keccak256Hash([]byte("IncreaseLiquidity(uint256,uint128,uint256,uint256)"))
 var EventDecreaseLiq = crypto.Keccak256Hash([]byte("DecreaseLiquidity(uint256,uint128,uint256,uint256)"))
 
+// event PoolCreated(address indexed token0,address indexed token1,uint24 indexed fee,int24 tickSpacing,address pool)
+var EventPoolCreated = crypto.Keccak256Hash([]byte("PoolCreated(address,address,uint24,int24,address)"))
+
 type PoolStat struct {
 	Reserve0 *big.Int
 	Reserve1 *big.Int
@@ -45,10 +48,19 @@ type NftToken struct {
 	collection string
 	tokenId    string
 	user       string
+	pool       string
 	token0     string
 	token1     string
 	fee        int
 	direction  int //1: mint, -1: burn
+}
+
+type Pool struct {
+	Contract    string
+	Token0      string
+	Token1      string
+	FeeRate     int
+	TickSpacing int64
 }
 
 // EvmPool
@@ -256,7 +268,9 @@ func (t *EvmPool) startListenV3() (chan string, chan PoolStat) {
 	return chLog, chOrder
 }
 
-func (t *EvmPool) StartListenNFT() (chan string, chan NftToken) {
+func (t *EvmPool) StartListenNFT(f, code string) (chan string, chan NftToken) {
+	factory := common.HexToAddress(f)
+	initCode, _ := hex.DecodeString(code)
 	c, err := ethclient.Dial(t.nodeUrl)
 	if err != nil {
 		panic(err)
@@ -323,16 +337,19 @@ func (t *EvmPool) StartListenNFT() (chan string, chan NftToken) {
 					user = from.String()
 				}
 				//Get the postion
-				var token0, token1 string
+				var token0, token1, pool string
 				var fee int
 				if p, err := iNftPostion.Positions(&bind.CallOpts{}, tokenId); err != nil {
 					chLog <- fmt.Sprintf("call positions from NewINonfungiblePositionManager error. %s : %v", tokenId.String(), err)
 				} else {
 					token0, token1 = p.Token0.Hex(), p.Token1.Hex()
 					fee = int(p.Fee.Int64())
+					pool = getPoolContract(p.Token0, p.Token1, factory, p.Fee, initCode)
 				}
+				//Get the pool's contract address
 				chNft <- NftToken{
 					collection: t.contract.String(),
+					pool:       pool,
 					token0:     token0,
 					token1:     token1,
 					fee:        fee,
@@ -345,4 +362,85 @@ func (t *EvmPool) StartListenNFT() (chan string, chan NftToken) {
 		}
 	}()
 	return chLog, chNft
+}
+
+func (t *EvmPool) StartListenFactory() (chan string, chan Pool) {
+	c, err := ethclient.Dial(t.nodeUrl)
+	if err != nil {
+		panic(err)
+	}
+
+	fromHeight, err := c.BlockNumber(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	//Set the query filter
+	query := ethereum.FilterQuery{
+		Addresses: []common.Address{t.contract},
+		Topics:    [][]common.Hash{{EventPoolCreated}},
+	}
+
+	// connetion err chan
+	chLog := make(chan string, 10)
+	chPool := make(chan Pool, 10)
+
+	go func() {
+		log.Default().Printf("Start to scan Factory %d : %s ...\n", t.chainid, t.contract.Hex())
+		for {
+			time.Sleep(config.ScanTime * time.Second)
+			var toHeight uint64
+			if toHeight, err = c.BlockNumber(context.Background()); err != nil {
+				str := err.Error()
+				bi := strings.Index(str, "<title>") + 7
+				ei := strings.Index(str, "</title>")
+				if len(str) > bi && len(str) > ei {
+					str = str[bi:ei]
+				}
+				chLog <- fmt.Sprintf("BlockNumber error. %v", str)
+				continue
+			} else if toHeight < fromHeight {
+				continue
+			}
+
+			query.FromBlock = new(big.Int).SetUint64(fromHeight)
+			query.ToBlock = new(big.Int).SetUint64(toHeight)
+			logs, err := c.FilterLogs(context.Background(), query)
+			if err != nil {
+				chLog <- fmt.Sprintf("FilterLogs error. %v", err)
+				continue
+			}
+			for i := range logs {
+				token0 := common.BytesToAddress(logs[i].Topics[1].Bytes())
+				token1 := common.BytesToAddress(logs[i].Topics[2].Bytes())
+				fee := new(big.Int).SetBytes(logs[i].Topics[3].Bytes()).Int64()
+				tickSpacing := new(big.Int).SetBytes(logs[i].Data[:32]).Int64()
+				pool := common.BytesToAddress(logs[i].Data[32:])
+				chPool <- Pool{
+					Token0:      token0.Hex(),
+					Token1:      token1.Hex(),
+					FeeRate:     int(fee),
+					TickSpacing: tickSpacing,
+					Contract:    pool.Hex(),
+				}
+			}
+			fromHeight = toHeight + 1
+		}
+	}()
+	return chLog, chPool
+}
+
+func getPoolContract(t0, t1, factory common.Address, fee *big.Int, initCode []byte) string {
+	data := common.LeftPadBytes(t0.Bytes(), 32)
+	data = append(data, common.LeftPadBytes(t1.Bytes(), 32)...)
+	data = append(data, common.LeftPadBytes(fee.Bytes(), 32)...)
+	s1 := crypto.Keccak256(data)
+
+	d := []byte{15 + 15<<4} //'0xff'
+	d = append(d, factory.Bytes()...)
+	d = append(d, s1...)
+	d = append(d, initCode...)
+	s2 := crypto.Keccak256(d)
+
+	return common.BytesToAddress(s2[12:]).Hex()
 }

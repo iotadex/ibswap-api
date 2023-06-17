@@ -33,7 +33,7 @@ func AddPool(c *gin.Context) {
 		c.String(http.StatusOK, "params error")
 		return
 	}
-	if err := model.AddPool(chainid, contract, version, token0, token1, feeRate); err != nil {
+	if err := model.AddPool(chainid, contract, version, token0, token1, int(feeRate)); err != nil {
 		gl.OutLogger.Error("Add token to db error. %v", err)
 		c.String(http.StatusOK, "params error")
 	} else {
