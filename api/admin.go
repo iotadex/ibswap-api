@@ -3,6 +3,7 @@ package api
 import (
 	"ibswap/gl"
 	"ibswap/model"
+	"ibswap/service"
 	"net/http"
 	"strconv"
 
@@ -33,10 +34,11 @@ func AddPool(c *gin.Context) {
 		c.String(http.StatusOK, "params error")
 		return
 	}
-	if err := model.AddPool(chainid, contract, version, token0, token1, int(feeRate)); err != nil {
+	if p, err := model.AddPool(chainid, contract, version, token0, token1, int(feeRate)); err != nil {
 		gl.OutLogger.Error("Add token to db error. %v", err)
 		c.String(http.StatusOK, "params error")
 	} else {
 		c.String(http.StatusOK, "OK")
+		service.StartPool(p)
 	}
 }

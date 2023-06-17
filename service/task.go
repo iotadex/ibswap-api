@@ -144,8 +144,10 @@ func dealNft(nft *EvmPool) {
 			}
 			//Get the pool's contract
 			if p := model.GetPoolByTokensAndFee(nftToken.token0, nftToken.token1, nftToken.fee); p == nil {
-				if err := model.AddPool(nft.chainid, nftToken.pool, 3, nftToken.token0, nftToken.token1, nftToken.fee); err != nil {
+				if p, err := model.AddPool(nft.chainid, nftToken.pool, 3, nftToken.token0, nftToken.token1, nftToken.fee); err != nil {
 					gl.OutLogger.Error("Add pool to db error. %v : %v", nftToken, err)
+				} else {
+					StartPool(p)
 				}
 			}
 			if err := model.StoreNftToken(nftToken.tokenId, nftToken.collection, nftToken.user, nftToken.pool, nftToken.token0, nftToken.token1, nftToken.fee); err != nil {
@@ -163,12 +165,9 @@ func dealFactory(factory *EvmPool) {
 			gl.OutLogger.Error(log)
 		case pool := <-chPool:
 			gl.OutLogger.Info("Pool had been created. %v", pool)
-			if err := model.AddPool(factory.chainid, pool.Contract, 3, pool.Token0, pool.Token1, pool.FeeRate); err != nil {
+			if p, err := model.AddPool(factory.chainid, pool.Contract, 3, pool.Token0, pool.Token1, pool.FeeRate); err != nil {
 				gl.OutLogger.Error("Add pool to db error. %v : %v", pool, err)
 				continue
-			}
-			if p, err := model.GetPool(factory.chainid, pool.Contract); err != nil {
-				gl.OutLogger.Error("Get pool from cache error not exist. %v : %v", pool, err)
 			} else {
 				StartPool(p)
 			}

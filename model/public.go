@@ -59,9 +59,9 @@ func AddToken(symbol string, chainid int64, contract, code string, decimal, t, p
 	return nil
 }
 
-func AddPool(chainid int64, contract string, version int64, token0, token1 string, feeRate int) error {
+func AddPool(chainid int64, contract string, version int64, token0, token1 string, feeRate int) (*Pool, error) {
 	if _, err := db.Exec("insert into `pool`(`chainid`,`contract`,`version`,`token0`,`token1`,`fee_rate`) values(?,?,?,?,?,?)", chainid, contract, version, token0, token1, feeRate); err != nil {
-		return err
+		return nil, err
 	}
 	p := Pool{
 		ChainID:  chainid,
@@ -82,7 +82,7 @@ func AddPool(chainid int64, contract string, version int64, token0, token1 strin
 		poolMMM[p.Token0][p.Token1] = make(map[int]*Pool)
 	}
 	poolMMM[p.Token0][p.Token1][p.FeeRate] = &p
-	return nil
+	return &p, nil
 }
 
 func GetCoin(chainid int64, symbol string) (*Coin, error) {
