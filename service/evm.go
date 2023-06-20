@@ -270,7 +270,7 @@ func (t *EvmPool) startListenV3() (chan string, chan PoolStat) {
 
 func (t *EvmPool) StartListenNFT(f, code string) (chan string, chan NftToken) {
 	factory := common.HexToAddress(f)
-	initCode, _ := hex.DecodeString(code)
+	initCode := common.FromHex(code)
 	c, err := ethclient.Dial(t.nodeUrl)
 	if err != nil {
 		panic(err)

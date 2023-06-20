@@ -15,7 +15,7 @@
 			"url": "https://json-rpc.evm.testnet.shimmer.network/",
 			"nft": "0xEe610aE2b68b5549F231bf9152FFA2907a09ABC8",
 			"factory": "0xf5505F34D30eCd03811DAFC8326874e74900Ee76",
-			"init_code": "0x8e9fe382501507411f52f566085a224b4f7955fab4a5dec1aedf007cb94dffb8"
+			"init_code": "8e9fe382501507411f52f566085a224b4f7955fab4a5dec1aedf007cb94dffb8"
 		}
 	},
 	"scan_time": 120,

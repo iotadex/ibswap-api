@@ -16,9 +16,9 @@ func Start() {
 	currReserves = make(map[string]*Reserves)
 	poolStatsM = make(map[string][]model.PoolStat)
 
-	start(2)
-	start(3)
 	startNft()
+	start(3)
+	start(2)
 }
 
 func start(v int8) {
