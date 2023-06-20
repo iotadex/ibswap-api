@@ -72,16 +72,7 @@ func AddPool(chainid int64, contract string, version int64, token0, token1 strin
 		FeeRate:  feeRate,
 		Decimal:  18,
 	}
-	poolMMV3[chainid][contract] = &p
-	poolsMV3[chainid] = append(poolsMV3[chainid], &p)
-	poolsSV3 = append(poolsSV3, &p)
-	if _, exist := poolMMM[p.Token0]; !exist {
-		poolMMM[p.Token0] = make(map[string]map[int]*Pool)
-	}
-	if _, exist := poolMMM[p.Token0][p.Token1]; !exist {
-		poolMMM[p.Token0][p.Token1] = make(map[int]*Pool)
-	}
-	poolMMM[p.Token0][p.Token1][p.FeeRate] = &p
+	addPool(&p)
 	return &p, nil
 }
 
@@ -189,19 +180,23 @@ func getPools() {
 			poolsMV2[p.ChainID] = append(poolsMV2[p.ChainID], &p)
 			poolsSV2 = append(poolsSV2, &p)
 		} else if p.Version == 3 {
-			if _, exist := poolMMV3[p.ChainID]; !exist {
-				poolMMV3[p.ChainID] = make(map[string]*Pool)
-			}
-			poolMMV3[p.ChainID][p.Contract] = &p
-			poolsMV3[p.ChainID] = append(poolsMV3[p.ChainID], &p)
-			poolsSV3 = append(poolsSV3, &p)
-			if _, exist := poolMMM[p.Token0]; !exist {
-				poolMMM[p.Token0] = make(map[string]map[int]*Pool)
-			}
-			if _, exist := poolMMM[p.Token0][p.Token1]; !exist {
-				poolMMM[p.Token0][p.Token1] = make(map[int]*Pool)
-			}
-			poolMMM[p.Token0][p.Token1][p.FeeRate] = &p
+			addPool(&p)
 		}
 	}
+}
+
+func addPool(p *Pool) {
+	if _, exist := poolMMV3[p.ChainID]; !exist {
+		poolMMV3[p.ChainID] = make(map[string]*Pool)
+	}
+	poolMMV3[p.ChainID][p.Contract] = p
+	poolsMV3[p.ChainID] = append(poolsMV3[p.ChainID], p)
+	poolsSV3 = append(poolsSV3, p)
+	if _, exist := poolMMM[p.Token0]; !exist {
+		poolMMM[p.Token0] = make(map[string]map[int]*Pool)
+	}
+	if _, exist := poolMMM[p.Token0][p.Token1]; !exist {
+		poolMMM[p.Token0][p.Token1] = make(map[int]*Pool)
+	}
+	poolMMM[p.Token0][p.Token1][p.FeeRate] = p
 }
