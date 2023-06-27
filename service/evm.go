@@ -225,24 +225,23 @@ func (t *EvmPool) startListenV3() (chan string, chan PoolStat) {
 			}
 			amount0 := big.NewInt(0)
 			amount1 := big.NewInt(0)
-			reserve0 := big.NewInt(0)
-			reserve1 := big.NewInt(0)
 			var tick int64
 			for i := range logs {
 				if bytes.Equal(logs[i].Topics[0].Bytes(), EventSwapV3.Bytes()) {
 					if len(logs[i].Data) < 160 {
 						chLog <- fmt.Sprintf("Swap Event Data error. %v", hex.EncodeToString(logs[i].Data))
+						continue
 					}
-					a1 := new(big.Int).SetBytes(logs[i].Data[:32])
-					a2 := (new(big.Int).SetBytes(logs[i].Data[32:64]))
-					amount0.Add(amount0, a1.Abs(a1))
-					amount1.Add(amount1, a2.Abs(a2))
-					tick = new(big.Int).SetBytes(logs[i].Data[128:]).Int64()
+					amount0.Add(amount0, absBytes(logs[i].Data[:32]))
+					amount1.Add(amount1, absBytes(logs[i].Data[32:64]))
+					tick = flagBytes(logs[i].Data[156:]).Int64()
 				}
 			}
 			fromHeight = toHeight + 1
 			if len(logs) > 0 {
 				// Get balances from ERC20
+				reserve0 := big.NewInt(0)
+				reserve1 := big.NewInt(0)
 				if balance, err := token0.BalanceOf(&bind.CallOpts{}, t.contract); err != nil {
 					chLog <- fmt.Sprintf("Balance of token0 error. %v", err)
 				} else {
@@ -443,4 +442,37 @@ func getPoolContract(t0, t1, factory common.Address, fee *big.Int, initCode []by
 	s2 := crypto.Keccak256(d)
 
 	return common.BytesToAddress(s2[12:]).Hex()
+}
+
+func absBytes(d []byte) *big.Int {
+	if len(d) == 0 {
+		return nil
+	}
+	a := big.NewInt(0)
+	if d[0]&0x80 > 0 {
+		for i := range d {
+			d[i] = ^d[i]
+		}
+		a = new(big.Int).SetBytes(d)
+		a.Add(a, big.NewInt(1))
+	}
+	return a
+}
+
+func flagBytes(d []byte) *big.Int {
+	if len(d) == 0 {
+		return nil
+	}
+	var a *big.Int
+	if d[0]&0x80 > 0 {
+		for i := range d {
+			d[i] = ^d[i]
+		}
+		a = new(big.Int).SetBytes(d)
+		a.Add(a, big.NewInt(1))
+		a = a.Neg(a)
+	} else {
+		a = new(big.Int).SetBytes(d)
+	}
+	return a
 }
