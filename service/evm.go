@@ -340,6 +340,7 @@ func (t *EvmPool) StartListenNFT(f, code string) (chan string, chan NftToken) {
 				var fee int
 				if p, err := iNftPostion.Positions(&bind.CallOpts{}, tokenId); err != nil {
 					chLog <- fmt.Sprintf("call positions from NewINonfungiblePositionManager error. %s : %v", tokenId.String(), err)
+					continue
 				} else {
 					token0, token1 = p.Token0.Hex(), p.Token1.Hex()
 					fee = int(p.Fee.Int64())
