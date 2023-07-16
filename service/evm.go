@@ -121,7 +121,7 @@ StartFilter:
 		time.Sleep(time.Second * 5)
 		goto StartFilter
 	}
-	log.Default().Printf("Start to scan V2 pool %d ...\n", len(query.Addresses))
+	log.Default().Printf("Start to listen V2 pool %d ...\n", len(query.Addresses))
 	for {
 		select {
 		case err := <-sub.Err():
@@ -251,7 +251,7 @@ StartFilter:
 		time.Sleep(time.Second * 5)
 		goto StartFilter
 	}
-	log.Default().Printf("Start to scan V3 pool %d ...\n", len(query.Addresses))
+	log.Default().Printf("Start to listen V3 pool %d ...\n", len(query.Addresses))
 	for {
 		select {
 		case err := <-sub.Err():
@@ -393,7 +393,7 @@ StartFilter:
 		time.Sleep(time.Second * 5)
 		goto StartFilter
 	}
-	log.Default().Printf("Start to scan NFT pool %s ...\n", query.Addresses[0].Hex())
+	log.Default().Printf("Start to listen NFT pool %s ...\n", query.Addresses[0].Hex())
 	for {
 		select {
 		case err := <-sub.Err():
@@ -523,7 +523,7 @@ StartFilter:
 		time.Sleep(time.Second * 5)
 		goto StartFilter
 	}
-	log.Default().Printf("Start to scan NFT pool %s ...\n", query.Addresses[0].Hex())
+	log.Default().Printf("Start to listen Factory pool %s ...\n", query.Addresses[0].Hex())
 	for {
 		select {
 		case err := <-sub.Err():

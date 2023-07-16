@@ -17,7 +17,7 @@ type Coin struct {
 
 type Pool struct {
 	Contract string `json:"contract"`
-	Version  int8
+	Version  int8   `json:"version"`
 	Token0   string `json:"token0"`
 	Token1   string `json:"token1"`
 	FeeRate  int    `json:"fee_rate"`
