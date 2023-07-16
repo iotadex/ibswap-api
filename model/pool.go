@@ -7,33 +7,35 @@ import (
 	"time"
 )
 
-func StorePoolVolume(id int64, contract string, tick int64, r0, r1 string, v0, v1 string) error {
-	_, err := db.Exec("insert into volume(`id`,`contract`,`tick`,`reserve0`,`reserve1`,`vol0`,`vol1`) values(?,?,?,?,?,?,?)", id, contract, tick, r0, r1, v0, v1)
+func StorePoolVolume(tx, contract string, tick int64, r0, r1 string, v0, v1 string) error {
+	_, err := db.Exec("insert into volume(`tx`,`contract`,`tick`,`reserve0`,`reserve1`,`vol0`,`vol1`) values(?,?,?,?,?,?,?)", tx, contract, tick, r0, r1, v0, v1)
 	return err
 }
 
+// / returns ts and vol0 and vol1
 func Get24hVolumes(contract string) ([]int64, [][2]*big.Int, error) {
-	id := time.Now().Unix()/60 - 1440
-	rows, err := db.Query("select `id`,`vol0`,`vol1` from `volume` where `contract`=? and id>? order by `id` desc", contract, id)
+	ts := time.Now().AddDate(0, 0, -1).Format(time.DateTime)
+	rows, err := db.Query("select `vol0`,`vol1`,`ts` from `volume` where `contract`=? and ts>? order by `ts` desc", contract, ts)
 	if err != nil {
 		return nil, nil, fmt.Errorf("get 24h volumes from db error. %v", err)
 	}
 	vols := make([][2]*big.Int, 0)
-	ids := make([]int64, 0)
+	tss := make([]int64, 0)
 	for rows.Next() {
-		var vol0, vol1 string
-		if err = rows.Scan(&id, &vol0, &vol1); err != nil {
+		var vol0, vol1, ts string
+		if err = rows.Scan(&vol0, &vol1, &ts); err != nil {
 			return nil, nil, fmt.Errorf("scan 24h volumes from db error. %v", err)
 		}
 		v0, b0 := new(big.Int).SetString(vol0, 10)
 		v1, b1 := new(big.Int).SetString(vol1, 10)
-		if !b0 || !b1 {
-			return nil, nil, fmt.Errorf("scan 24h volumes from db error. %s : %s", vol0, vol1)
+		timestamp, err := time.Parse(time.DateTime, ts)
+		if !b0 || !b1 || err != nil {
+			return nil, nil, fmt.Errorf("scan 24h volumes from db error. %s : %s : %s", vol0, vol1, ts)
 		}
 		vols = append(vols, [2]*big.Int{v0, v1})
-		ids = append(ids, id)
+		tss = append(tss, timestamp.Unix())
 	}
-	return ids, vols, nil
+	return tss, vols, nil
 }
 
 func GetLatestReserves(c string) ([2]*big.Int, int64, error) {

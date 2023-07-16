@@ -28,6 +28,7 @@ func start(v int8) {
 	t1 := make([]common.Address, 0)
 	count := 0
 	for _, p := range pools {
+		initPoolStat(p.Contract)
 		ps = append(ps, common.HexToAddress(p.Contract))
 		t0 = append(t0, common.HexToAddress(p.Token0))
 		t1 = append(t1, common.HexToAddress(p.Token1))
@@ -118,9 +119,8 @@ func dealTickV3(node *EvmNode, ps, t0, t1 []common.Address) {
 				volumes24H[key].append(Volume{amount0: tick.Volume0, amount1: tick.Volume1, ts: tick.Ts})
 			}
 
-			id := time.Now().Unix() / 60
 			//3. store to db
-			if err := model.StorePoolVolume(id, key, tick.Tick, preReserve0.String(), preReserve1.String(), tick.Volume0.String(), tick.Volume1.String()); err != nil {
+			if err := model.StorePoolVolume(tick.Tx, key, tick.Tick, preReserve0.String(), preReserve1.String(), tick.Volume0.String(), tick.Volume1.String()); err != nil {
 				gl.OutLogger.Error("Store pool volume into db error. %s : %v : %v", key, tick, err)
 			} else {
 				gl.OutLogger.Info("Volume of %s : %d : %s : %s : %s : %s", key, tick.Tick, preReserve0.String(), preReserve1.String(), tick.Volume0.String(), tick.Volume1.String())

@@ -40,6 +40,7 @@ var zeroAddress common.Address
 
 type PoolStat struct {
 	Address  string
+	Tx       string
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	Volume0  *big.Int
@@ -332,6 +333,7 @@ func (t *EvmNode) dealPoolV3Log(token0, token1 *ERC20, vLog *types.Log, chLog ch
 	}
 	chPoolStat <- PoolStat{
 		Address:  vLog.Address.Hex(),
+		Tx:       vLog.TxHash.Hex(),
 		Reserve0: reserve0,
 		Reserve1: reserve1,
 		Volume0:  amount0,
