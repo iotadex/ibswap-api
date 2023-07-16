@@ -59,36 +59,55 @@ func InitRouter() *gin.Engine {
 	api.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: GinLogger}), gin.Recovery())
 	{
 		api.GET("/pools/all", GetAllV2Pools)
-		api.GET("/pools/:chain_id/all", GetAllV2PoolsByChain)
-		api.GET("/pools/:chain_id/:contract", GetPoolByChainAndContract)
-		api.GET("/pools/:chain_id/overview", OverviewAllV2PoolsByChain)
-		api.GET("/pools/:chain_id/:contract/overview", OverviewPoolByChainAndContract)
-		api.GET("/pools/:chain_id/:contract/time-stats", StatPoolByChainAndContract)
+		api.GET("/pools/:contract", GetPoolByContract)
+		api.GET("/pools/overview", OverviewAllV2Pools)
+		api.GET("/pools/:contract/overview", OverviewPoolByContract)
+		api.GET("/pools/:contract/time-stats", StatPoolByContract)
+
+		api.GET("/pools/:chain_id/all", GetAllV2Pools)
+		api.GET("/pools/:chain_id/:contract", GetPoolByContract)
+		api.GET("/pools/:chain_id/overview", OverviewAllV2Pools)
+		api.GET("/pools/:chain_id/:contract/overview", OverviewPoolByContract)
+		api.GET("/pools/:chain_id/:contract/time-stats", StatPoolByContract)
 	}
 	coins := api.Group("/coins")
 	{
 		coins.POST("/add", AddToken)
+
 		coins.GET("/all", GetAllTokens)
-		coins.GET("/:chain_id/all", GetAllTokensByChain)
-		coins.GET("/:chain_id/:contract", GetTokenByChainAndContract)
+		coins.GET("/:contract", GetTokenByContract)
+
+		coins.GET("/:chain_id/all", GetAllTokens)
+		coins.GET("/:chain_id/:contract", GetTokenByContract)
 	}
 	v2 := api.Group("/v2")
 	{
 		v2.GET("/pools/all", GetAllV2Pools)
-		v2.GET("/pools/:chain_id/all", GetAllV2PoolsByChain)
-		v2.GET("/pools/:chain_id/:contract", GetPoolByChainAndContract)
-		v2.GET("/pools/:chain_id/overview", OverviewAllV2PoolsByChain)
-		v2.GET("/pools/:chain_id/:contract/overview", OverviewPoolByChainAndContract)
-		v2.GET("/pools/:chain_id/:contract/time-stats", StatPoolByChainAndContract)
+		v2.GET("/pools/:contract", GetPoolByContract)
+		v2.GET("/pools/overview", OverviewAllV2Pools)
+		v2.GET("/pools/:contract/overview", OverviewPoolByContract)
+		v2.GET("/pools/:contract/time-stats", StatPoolByContract)
+
+		v2.GET("/pools/:chain_id/all", GetAllV2Pools)
+		v2.GET("/pools/:chain_id/:contract", GetPoolByContract)
+		v2.GET("/pools/:chain_id/overview", OverviewAllV2Pools)
+		v2.GET("/pools/:chain_id/:contract/overview", OverviewPoolByContract)
+		v2.GET("/pools/:chain_id/:contract/time-stats", StatPoolByContract)
 	}
 	v3 := api.Group("/v3")
 	{
 		v3.GET("/pools/all", GetAllV3Pools)
-		v3.GET("/pools/:chain_id/all", GetAllV3PoolsByChain)
-		v3.GET("/pools/:chain_id/:contract", GetPoolByChainAndContract)
-		v3.GET("/pools/:chain_id/overview", OverviewAllV3PoolsByChain)
-		v3.GET("/pools/:chain_id/:contract/overview", OverviewPoolByChainAndContract)
-		v3.GET("/pools/:chain_id/:contract/time-stats", StatPoolByChainAndContract)
+		v3.GET("/pools/:contract", GetPoolByContract)
+		v3.GET("/pools/overview", OverviewAllV3Pools)
+		v3.GET("/pools/:contract/overview", OverviewPoolByContract)
+		v3.GET("/pools/:contract/time-stats", StatPoolByContract)
+
+		v3.GET("/pools/:chain_id/all", GetAllV3Pools)
+		v3.GET("/pools/:chain_id/:contract", GetPoolByContract)
+		v3.GET("/pools/:chain_id/overview", OverviewAllV3Pools)
+		v3.GET("/pools/:chain_id/:contract/overview", OverviewPoolByContract)
+		v3.GET("/pools/:chain_id/:contract/time-stats", StatPoolByContract)
+
 		v3.GET("/nfts/:user/:collection", GetNftTokensByUser)
 	}
 
@@ -98,8 +117,4 @@ func InitRouter() *gin.Engine {
 	}
 
 	return api
-}
-
-func Test(c *gin.Context) {
-	c.String(http.StatusOK, "Test OK!")
 }

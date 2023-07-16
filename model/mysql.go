@@ -2,11 +2,9 @@ package model
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"ibswap/config"
 	"log"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -36,21 +34,4 @@ func Ping() error {
 		return fmt.Errorf("connect to Mysql error : %v", err)
 	}
 	return nil
-}
-
-func LoadPoolFromJosn() {
-	file, err := os.Open("pool.json")
-	if err != nil {
-		log.Panic(err)
-	}
-	defer file.Close()
-	pools := make([]Pool, 0)
-	if err = json.NewDecoder(file).Decode(&pools); err != nil {
-		log.Panic(err)
-	}
-	for _, p := range pools {
-		if _, err := db.Exec("insert into `pool`(`chainid`,`contract`,`token0`,`token1`,`fee_rate`,`deci`) values(?,?,?,?,?,?)", p.ChainID, p.Contract, p.Token0, p.Token1, p.FeeRate, p.Decimal); err != nil {
-			log.Panic(err)
-		}
-	}
 }

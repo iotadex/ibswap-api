@@ -11,12 +11,14 @@
 		"pwd": "851012"
 	},
 	"evm_node": {
-		"1071": {
-			"url": "https://json-rpc.evm.testnet.shimmer.network/",
-			"nft": "0xEe610aE2b68b5549F231bf9152FFA2907a09ABC8",
-			"factory": "0xf5505F34D30eCd03811DAFC8326874e74900Ee76",
-			"init_code": "8e9fe382501507411f52f566085a224b4f7955fab4a5dec1aedf007cb94dffb8"
-		}
+		"rpc": "https://json-rpc.evm.testnet.shimmer.network/",
+		"wss": "wss://ws.json-rpc.evm.testnet.shimmer.network/",
+		"max_scan_height": 9999,
+		"listen_type": 0,
+		"listen_pool_count": 10,
+		"nft": "0xA003566666347dB17fd0aD4e47205901A370A51d",
+		"factory": "0xf5505F34D30eCd03811DAFC8326874e74900Ee76",
+		"init_code": "8e9fe382501507411f52f566085a224b4f7955fab4a5dec1aedf007cb94dffb8"
 	},
 	"scan_time": 120,
 	"stat_days": 30

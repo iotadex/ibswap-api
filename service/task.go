@@ -6,8 +6,9 @@ import (
 	"ibswap/gl"
 	"ibswap/model"
 	"math/big"
-	"strconv"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 func Start() {
@@ -18,74 +19,74 @@ func Start() {
 
 	startNft()
 	start(3)
-	start(2)
 }
 
 func start(v int8) {
 	pools := model.GetPools(v)
+	ps := make([]common.Address, 0)
+	t0 := make([]common.Address, 0)
+	t1 := make([]common.Address, 0)
+	count := 0
 	for _, p := range pools {
-		StartPool(p)
+		ps = append(ps, common.HexToAddress(p.Contract))
+		t0 = append(t0, common.HexToAddress(p.Token0))
+		t1 = append(t1, common.HexToAddress(p.Token1))
+		count++
+		if count > config.EvmNode.ListenPoolCount {
+			StartPool(ps, t0, t1)
+			ps = make([]common.Address, 0)
+			t0 = make([]common.Address, 0)
+			t1 = make([]common.Address, 0)
+			count = 0
+		}
+	}
+	if count > 0 {
+		StartPool(ps, t0, t1)
 	}
 }
 
-func StartPool(p *model.Pool) {
-	key := p.Contract + strconv.FormatInt(p.ChainID, 10)
+func initPoolStat(c string) {
 	//initial volumes24H
-	volumes24H[key] = NewVolumes()
-	if ids, vols, err := model.Get24hVolumes(p.ChainID, p.Contract); err != nil {
+	volumes24H[c] = NewVolumes()
+	if ids, vols, err := model.Get24hVolumes(c); err != nil {
 		panic(err)
 	} else {
 		for i := len(vols) - 1; i >= 0; i-- {
-			volumes24H[key].append(Volume{amount0: vols[i][0], amount1: vols[i][1], ts: ids[i] * 60})
+			volumes24H[c].append(Volume{amount0: vols[i][0], amount1: vols[i][1], ts: ids[i] * 60})
 		}
 	}
 	//initial utc0Reserves
-	utc0Reserves[key] = &Reserves{}
-	if day, rs, err := model.GetLatestUtc0Reserves(p.ChainID, p.Contract); err != nil {
+	utc0Reserves[c] = &Reserves{}
+	if day, rs, err := model.GetLatestUtc0Reserves(c); err != nil {
 		panic(err)
 	} else {
-		utc0Reserves[key].set(rs[0], rs[1], 0)
-		utc0Reserves[key].day = day
+		utc0Reserves[c].set(rs[0], rs[1], 0)
+		utc0Reserves[c].day = day
 	}
 	//inital currReserves
-	currReserves[key] = &Reserves{}
-	if rs, tick, err := model.GetLatestReserves(p.ChainID, p.Contract); err != nil {
+	currReserves[c] = &Reserves{}
+	if rs, tick, err := model.GetLatestReserves(c); err != nil {
 		panic(err)
 	} else {
-		currReserves[key].set(rs[0], rs[1], tick)
-	}
-
-	pool := NewEvmPool(p.ChainID, config.EvmNodes[p.ChainID].Url, p.Contract, p.Token0, p.Token1)
-	go dealTick(pool, p.Version)
-	time.Sleep(time.Second)
-}
-
-func startNft() {
-	for chainid, node := range config.EvmNodes {
-		nft := NewEvmPool(chainid, node.Url, node.Nft, "0x0", "0x0")
-		go dealNft(nft)
-		time.Sleep(time.Second)
+		currReserves[c].set(rs[0], rs[1], tick)
 	}
 }
 
-func StartFactory() {
-	for chainid, node := range config.EvmNodes {
-		factory := NewEvmPool(chainid, node.Url, node.Factory, "0x0", "0x0")
-		go dealFactory(factory)
-		time.Sleep(time.Second)
-	}
+func StartPool(ps, t0, t1 []common.Address) {
+	node := NewEvmNode(config.EvmNode.Rpc, config.EvmNode.Wss, config.EvmNode.MaxScanHeight, config.EvmNode.ListenType)
+	go dealTickV3(node, ps, t0, t1)
 }
 
-func dealTick(pool *EvmPool, v int8) {
+func dealTickV3(node *EvmNode, ps, t0, t1 []common.Address) {
 	zero := big.NewInt(0)
-	chLog, chTick := pool.StartListen(v)
-	key := pool.contract.Hex() + strconv.FormatInt(pool.chainid, 10)
+	chLog, chTick := node.StartListenV3(ps, t0, t1)
 	preReserve0, preReserve1 := big.NewInt(0), big.NewInt(0)
 	for {
 		select {
 		case log := <-chLog:
 			gl.OutLogger.Error(log)
 		case tick := <-chTick:
+			key := tick.Address
 			//1. set current reserves
 			if tick.Reserve0.Cmp(zero) != 0 {
 				preReserve0, preReserve1 = tick.Reserve0, tick.Reserve1
@@ -99,12 +100,12 @@ func dealTick(pool *EvmPool, v int8) {
 				utc0Reserves[key].day = currDay
 
 				// count the last days's volume
-				v06d, v16d, err := model.Get6DaysVolumes(pool.chainid, pool.contract.Hex())
+				v06d, v16d, err := model.Get6DaysVolumes(key)
 				if err == nil {
 					vol := volumes24H[key].get24HVolume()
 					v06d.Add(v06d, vol.amount0)
 					v16d.Add(v16d, vol.amount1)
-					if err := model.StorePoolStatistic(currDay-1, pool.chainid, pool.contract.Hex(), preReserve0.String(), preReserve1.String(), vol.amount0.String(), vol.amount1.String(), v06d.String(), v16d.String()); err != nil {
+					if err := model.StorePoolStatistic(currDay-1, key, preReserve0.String(), preReserve1.String(), vol.amount0.String(), vol.amount1.String(), v06d.String(), v16d.String()); err != nil {
 						gl.OutLogger.Error("store pool stat into db error. %s : %v", key, err)
 					}
 				} else {
@@ -119,7 +120,7 @@ func dealTick(pool *EvmPool, v int8) {
 
 			id := time.Now().Unix() / 60
 			//3. store to db
-			if err := model.StorePoolVolume(id, pool.chainid, pool.contract.Hex(), tick.Tick, preReserve0.String(), preReserve1.String(), tick.Volume0.String(), tick.Volume1.String()); err != nil {
+			if err := model.StorePoolVolume(id, key, tick.Tick, preReserve0.String(), preReserve1.String(), tick.Volume0.String(), tick.Volume1.String()); err != nil {
 				gl.OutLogger.Error("Store pool volume into db error. %s : %v : %v", key, tick, err)
 			} else {
 				gl.OutLogger.Info("Volume of %s : %d : %s : %s : %s : %s", key, tick.Tick, preReserve0.String(), preReserve1.String(), tick.Volume0.String(), tick.Volume1.String())
@@ -128,8 +129,14 @@ func dealTick(pool *EvmPool, v int8) {
 	}
 }
 
-func dealNft(nft *EvmPool) {
-	chLog, chNftToken := nft.StartListenNFT(config.EvmNodes[nft.chainid].Factory, config.EvmNodes[nft.chainid].InitCode)
+func startNft() {
+	nft := NewEvmNode(config.EvmNode.Rpc, config.EvmNode.Wss, config.EvmNode.MaxScanHeight, config.EvmNode.ListenType)
+	go dealNft(nft)
+	time.Sleep(time.Second)
+}
+
+func dealNft(nft *EvmNode) {
+	chLog, chNftToken := nft.StartListenNft(config.EvmNode.Nft, config.EvmNode.Factory, config.EvmNode.InitCode)
 	for {
 		select {
 		case log := <-chLog:
@@ -144,10 +151,10 @@ func dealNft(nft *EvmPool) {
 			}
 			//Get the pool's contract
 			if p := model.GetPoolByTokensAndFee(nftToken.token0, nftToken.token1, nftToken.fee); p == nil {
-				if p, err := model.AddPool(nft.chainid, nftToken.pool, 3, nftToken.token0, nftToken.token1, nftToken.fee); err != nil {
+				if p, err := model.AddPool(nftToken.pool, 3, nftToken.token0, nftToken.token1, nftToken.fee); err != nil {
 					gl.OutLogger.Error("Add pool to db error. %v : %v", nftToken, err)
 				} else {
-					StartPool(p)
+					StartPool([]common.Address{common.HexToAddress(p.Contract)}, []common.Address{common.HexToAddress(p.Token0)}, []common.Address{common.HexToAddress(p.Token1)})
 				}
 			}
 			if err := model.StoreNftToken(nftToken.tokenId, nftToken.collection, nftToken.user, nftToken.pool, nftToken.token0, nftToken.token1, nftToken.fee); err != nil {
@@ -157,26 +164,31 @@ func dealNft(nft *EvmPool) {
 	}
 }
 
-func dealFactory(factory *EvmPool) {
-	chLog, chPool := factory.StartListenFactory()
+func StartFactory() {
+	factory := NewEvmNode(config.EvmNode.Rpc, config.EvmNode.Wss, config.EvmNode.MaxScanHeight, config.EvmNode.ListenType)
+	go dealFactory(factory)
+	time.Sleep(time.Second)
+}
+
+func dealFactory(factory *EvmNode) {
+	chLog, chPool := factory.StartListenFactory(config.EvmNode.Factory)
 	for {
 		select {
 		case log := <-chLog:
 			gl.OutLogger.Error(log)
 		case pool := <-chPool:
 			gl.OutLogger.Info("Pool had been created. %v", pool)
-			if p, err := model.AddPool(factory.chainid, pool.Contract, 3, pool.Token0, pool.Token1, pool.FeeRate); err != nil {
+			if p, err := model.AddPool(pool.Contract, 3, pool.Token0, pool.Token1, pool.FeeRate); err != nil {
 				gl.OutLogger.Error("Add pool to db error. %v : %v", pool, err)
 				continue
 			} else {
-				StartPool(p)
+				StartPool([]common.Address{common.HexToAddress(p.Contract)}, []common.Address{common.HexToAddress(p.Token0)}, []common.Address{common.HexToAddress(p.Token1)})
 			}
 		}
 	}
 }
 
 type PoolOverview struct {
-	ChainID      int64  `json:"chainid"`
 	Contract     string `json:"contract"`
 	Token0       string `json:"token0"`
 	Token1       string `json:"token1"`
@@ -190,11 +202,11 @@ type PoolOverview struct {
 	Ts           int64  `json:"ts"`
 }
 
-func OverviewPoolsByChainid(chainid int64, v int8) []PoolOverview {
-	pools := model.GetPoolsByChainId(chainid, v)
+func OverviewPools(v int8) []PoolOverview {
+	pools := model.GetPools(v)
 	ps := make([]PoolOverview, 0)
 	for _, p := range pools {
-		key := p.Contract + strconv.FormatInt(chainid, 10)
+		key := p.Contract
 		if _, exist := currReserves[key]; !exist {
 			continue
 		}
@@ -202,7 +214,6 @@ func OverviewPoolsByChainid(chainid int64, v int8) []PoolOverview {
 		vol24H := volumes24H[key].get24HVolume()
 		utc0Reserve, _ := utc0Reserves[key].get()
 		ps = append(ps, PoolOverview{
-			ChainID:      chainid,
 			Contract:     p.Contract,
 			Token0:       p.Token0,
 			Token1:       p.Token1,
@@ -219,12 +230,12 @@ func OverviewPoolsByChainid(chainid int64, v int8) []PoolOverview {
 	return ps
 }
 
-func OverviewPoolsByChainidAndContract(chainid int64, contract string) (*PoolOverview, error) {
-	p, err := model.GetPool(chainid, contract)
+func OverviewPoolsByContract(contract string) (*PoolOverview, error) {
+	p, err := model.GetPool(contract)
 	if err != nil {
 		return nil, err
 	}
-	key := contract + strconv.FormatInt(chainid, 10)
+	key := contract
 	if _, exist := currReserves[key]; !exist {
 		return nil, fmt.Errorf("key not exist. %s", key)
 	}
@@ -232,7 +243,6 @@ func OverviewPoolsByChainidAndContract(chainid int64, contract string) (*PoolOve
 	vol24H := volumes24H[key].get24HVolume()
 	utc0Reserve, _ := utc0Reserves[key].get()
 	return &PoolOverview{
-		ChainID:      chainid,
 		Contract:     contract,
 		Token0:       p.Token0,
 		Token1:       p.Token1,
@@ -247,9 +257,9 @@ func OverviewPoolsByChainidAndContract(chainid int64, contract string) (*PoolOve
 	}, nil
 }
 
-func CountPoolVolumes(chainid int64, contract string) ([]model.PoolStat, error) {
+func CountPoolVolumes(contract string) ([]model.PoolStat, error) {
 	currDay := time.Now().Unix() / 86400
-	key := contract + strconv.FormatInt(chainid, 10)
+	key := contract
 	poolStatsMutex.Lock()
 	defer poolStatsMutex.Unlock()
 	if ps, exist := poolStatsM[key]; exist {
@@ -259,7 +269,7 @@ func CountPoolVolumes(chainid int64, contract string) ([]model.PoolStat, error) 
 			}
 		}
 	}
-	if ps, err := model.GetPoolStatistic(chainid, contract, currDay-config.StatDays); err != nil {
+	if ps, err := model.GetPoolStatistic(contract, currDay-config.StatDays); err != nil {
 		return nil, err
 	} else {
 		poolStatsM[key] = ps
