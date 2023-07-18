@@ -13,7 +13,7 @@
 	"evm_node": {
 		"rpc": "https://json-rpc.evm.testnet.shimmer.network/",
 		"wss": "wss://ws.json-rpc.evm.testnet.shimmer.network/",
-		"max_scan_height": 9999,
+		"max_scan_height": 999,
 		"listen_type": 0,
 		"listen_pool_count": 10,
 		"nft": "0xA003566666347dB17fd0aD4e47205901A370A51d",
