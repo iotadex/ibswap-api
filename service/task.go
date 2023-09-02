@@ -82,11 +82,18 @@ func dealTickV3(node *EvmNode, ps, t0, t1 []common.Address) {
 	zero := big.NewInt(0)
 	chLog, chTick := node.StartListenV3(ps, t0, t1)
 	preReserve0, preReserve1 := big.NewInt(0), big.NewInt(0)
+	preTick := int64(0)
 	for {
 		select {
 		case log := <-chLog:
 			gl.OutLogger.Error(log)
 		case tick := <-chTick:
+			if tick.Volume0.Cmp(zero) == 0 && tick.Volume1.Cmp(zero) == 0 {
+				tick.Tick = preTick
+			} else {
+				preTick = tick.Tick
+			}
+
 			key := tick.Address
 			//1. set current reserves
 			if tick.Reserve0.Cmp(zero) != 0 {
@@ -194,11 +201,12 @@ type PoolOverview struct {
 	Token1       string `json:"token1"`
 	Reserve0     string `json:"reserve0"`
 	Reserve1     string `json:"reserve1"`
-	Tick         int64  `json:"tick"`
+	CurrTick     int64  `json:"curr_tick"`
 	Volume24H0   string `json:"volume24h0"`
 	Volume24H1   string `json:"volume24h1"`
 	Utc0Reserve0 string `json:"utc0reserve0"`
 	Utc0Reserve1 string `json:"utc0reserve1"`
+	Utc0Tick     int64  `json:"utc0_tick"`
 	Ts           int64  `json:"ts"`
 }
 
@@ -212,18 +220,19 @@ func OverviewPools(v int8) []PoolOverview {
 		}
 		currReserve, currTick := currReserves[key].get()
 		vol24H := volumes24H[key].get24HVolume()
-		utc0Reserve, _ := utc0Reserves[key].get()
+		utc0Reserve, utc0Tick := utc0Reserves[key].get()
 		ps = append(ps, PoolOverview{
 			Contract:     p.Contract,
 			Token0:       p.Token0,
 			Token1:       p.Token1,
 			Reserve0:     currReserve[0].String(),
 			Reserve1:     currReserve[1].String(),
-			Tick:         currTick,
+			CurrTick:     currTick,
 			Volume24H0:   vol24H.amount0.String(),
 			Volume24H1:   vol24H.amount1.String(),
 			Utc0Reserve0: utc0Reserve[0].String(),
-			Utc0Reserve1: utc0Reserve[0].String(),
+			Utc0Reserve1: utc0Reserve[1].String(),
+			Utc0Tick:     utc0Tick,
 			Ts:           vol24H.ts + 86400,
 		})
 	}
@@ -241,18 +250,19 @@ func OverviewPoolsByContract(contract string) (*PoolOverview, error) {
 	}
 	currReserve, currTick := currReserves[key].get()
 	vol24H := volumes24H[key].get24HVolume()
-	utc0Reserve, _ := utc0Reserves[key].get()
+	utc0Reserve, utc0Tick := utc0Reserves[key].get()
 	return &PoolOverview{
 		Contract:     contract,
 		Token0:       p.Token0,
 		Token1:       p.Token1,
 		Reserve0:     currReserve[0].String(),
 		Reserve1:     currReserve[1].String(),
-		Tick:         currTick,
+		CurrTick:     currTick,
 		Volume24H0:   vol24H.amount0.String(),
 		Volume24H1:   vol24H.amount1.String(),
 		Utc0Reserve0: utc0Reserve[0].String(),
 		Utc0Reserve1: utc0Reserve[1].String(),
+		Utc0Tick:     utc0Tick,
 		Ts:           vol24H.ts + 86400,
 	}, nil
 }

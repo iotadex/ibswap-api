@@ -117,11 +117,12 @@ Get the overview of all pools
     "contract":"0x06A0464AAAc63335C8761b79e6B0C8F98232ab8F",
     "reserve0":"101513857227959068998",
     "reserve1":"4873095153106560344767",
-    "tick":0,
+    "curr_tick":0,
     "volume24h0":"2105525145256533783",
     "volume24h1":"2105525145256533783",
     "utc0reserve0":"101513857227959068998",
     "utc0reserve1":"101513857227959068998",
+    "utc0_tick":1,
     "ts":1685627419
  }
 ```
