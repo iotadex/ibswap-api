@@ -286,16 +286,16 @@ func countVolumes(v int8) {
 		preDay = currDay
 		pools := model.GetPools(v)
 		for _, p := range pools {
-			vol1d, err1 := model.Get1DayVolumes(p.Contract)
-			vol7d, err2 := model.GetNDaysVolumes(p.Contract, currDay-7)
-			if err1 != nil || err2 != nil {
-				gl.OutLogger.Error("CountPoolVolumes from db error. %s : %v : %v", p.Contract, err1, err2)
+			vol1d := volumes24H[p.Contract].get24HVolume()
+			vol7d, err := model.GetNDaysVolumes(p.Contract, currDay-7)
+			if err != nil {
+				gl.OutLogger.Error("CountPoolVolumes from db error. %s : %v", p.Contract, err)
 				continue
 			}
-			vol7d[0].Add(vol7d[0], vol1d[0])
-			vol7d[1].Add(vol7d[1], vol1d[1])
+			vol7d[0].Add(vol7d[0], vol1d.amount0)
+			vol7d[1].Add(vol7d[1], vol1d.amount1)
 			currReserve, _ := currReserves[p.Contract].get()
-			if err := model.StorePoolStatistic(currDay-1, p.Contract, currReserve[0].String(), currReserve[1].String(), vol1d[0].String(), vol1d[1].String(), vol7d[0].String(), vol7d[1].String()); err != nil {
+			if err := model.StorePoolStatistic(currDay-1, p.Contract, currReserve[0].String(), currReserve[1].String(), vol1d.amount0.String(), vol1d.amount1.String(), vol7d[0].String(), vol7d[1].String()); err != nil {
 				gl.OutLogger.Error("store pool stat into db error. %s : %v", p.Contract, err)
 			}
 		}
