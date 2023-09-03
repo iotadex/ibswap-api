@@ -19,6 +19,7 @@ func Start() {
 
 	startNft()
 	start(3)
+	go countVolumes(3)
 }
 
 func start(v int8) {
@@ -106,19 +107,6 @@ func dealTickV3(node *EvmNode, ps, t0, t1 []common.Address) {
 			if utc0Reserves[key].day != currDay {
 				utc0Reserves[key].set(preReserve0, preReserve1, tick.Tick)
 				utc0Reserves[key].day = currDay
-
-				// count the last days's volume
-				v06d, v16d, err := model.Get6DaysVolumes(key)
-				if err == nil {
-					vol := volumes24H[key].get24HVolume()
-					v06d.Add(v06d, vol.amount0)
-					v16d.Add(v16d, vol.amount1)
-					if err := model.StorePoolStatistic(currDay-1, key, preReserve0.String(), preReserve1.String(), vol.amount0.String(), vol.amount1.String(), v06d.String(), v16d.String()); err != nil {
-						gl.OutLogger.Error("store pool stat into db error. %s : %v", key, err)
-					}
-				} else {
-					gl.OutLogger.Error("Get6DaysVolumes from db error. %s : %v", key, err)
-				}
 			}
 
 			//2. set 24H volumes
@@ -267,7 +255,7 @@ func OverviewPoolsByContract(contract string) (*PoolOverview, error) {
 	}, nil
 }
 
-func CountPoolVolumes(contract string) ([]model.PoolStat, error) {
+func StatPoolVolumes(contract string) ([]model.PoolStat, error) {
 	currDay := time.Now().Unix() / 86400
 	key := contract
 	poolStatsMutex.Lock()
@@ -284,5 +272,32 @@ func CountPoolVolumes(contract string) ([]model.PoolStat, error) {
 	} else {
 		poolStatsM[key] = ps
 		return ps, nil
+	}
+}
+
+func countVolumes(v int8) {
+	preDay := time.Now().Unix() / 86400
+	ticker := time.NewTicker(time.Second * 10)
+	for range ticker.C {
+		currDay := time.Now().Unix() / 86400
+		if currDay == preDay {
+			continue
+		}
+		preDay = currDay
+		pools := model.GetPools(v)
+		for _, p := range pools {
+			vol1d, err1 := model.Get1DayVolumes(p.Contract)
+			vol7d, err2 := model.GetNDaysVolumes(p.Contract, currDay-7)
+			if err1 != nil || err2 != nil {
+				gl.OutLogger.Error("CountPoolVolumes from db error. %s : %v : %v", p.Contract, err1, err2)
+				continue
+			}
+			vol7d[0].Add(vol7d[0], vol1d[0])
+			vol7d[1].Add(vol7d[1], vol1d[1])
+			currReserve, _ := currReserves[p.Contract].get()
+			if err := model.StorePoolStatistic(currDay-1, p.Contract, currReserve[0].String(), currReserve[1].String(), vol1d[0].String(), vol1d[1].String(), vol7d[0].String(), vol7d[1].String()); err != nil {
+				gl.OutLogger.Error("store pool stat into db error. %s : %v", p.Contract, err)
+			}
+		}
 	}
 }

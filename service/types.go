@@ -17,15 +17,17 @@ type Reserves struct {
 func (r *Reserves) set(r0, r1 *big.Int, tick int64) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	r.data[0] = r0
-	r.data[1] = r1
+	r.data[0].Set(r0)
+	r.data[1].Set(r1)
 	r.tick = tick
 }
 
 func (r *Reserves) get() ([2]*big.Int, int64) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
-	var data [2]*big.Int = r.data
+	data := [2]*big.Int{big.NewInt(0), big.NewInt(0)}
+	data[0].Set(r.data[0])
+	data[1].Set(r.data[1])
 	tick := r.tick
 	return data, tick
 }

@@ -38,6 +38,20 @@ func Get24hVolumes(contract string) ([]int64, [][2]*big.Int, error) {
 	return tss, vols, nil
 }
 
+// / returns ts and vol0 and vol1
+func Get1DayVolumes(contract string) ([2]*big.Int, error) {
+	vols := [2]*big.Int{big.NewInt(0), big.NewInt(0)}
+	_, vols1d, err := Get24hVolumes(contract)
+	if err != nil {
+		return vols, err
+	}
+	for i := range vols1d {
+		vols[0].Add(vols[0], vols1d[i][0])
+		vols[1].Add(vols[1], vols1d[i][1])
+	}
+	return vols, nil
+}
+
 func GetLatestReserves(c string) ([2]*big.Int, int64, error) {
 	row := db.QueryRow("select `reserve0`,`reserve1`,`tick` from `volume` where `contract`=? order by `id` desc limit 1", c)
 	var r0, r1 string
@@ -74,26 +88,26 @@ func GetLatestUtc0Reserves(c string) (int64, [2]*big.Int, error) {
 	return day + 1, [2]*big.Int{reserve0, reserve1}, nil
 }
 
-func Get6DaysVolumes(c string) (*big.Int, *big.Int, error) {
-	rows, err := db.Query("select `vol01d`,`vol11d` from `pool_stat` where `contract`=? order by `id` desc limit 6", c)
+func GetNDaysVolumes(c string, id int64) ([2]*big.Int, error) {
+	vols := [2]*big.Int{big.NewInt(0), big.NewInt(0)}
+	rows, err := db.Query("select `vol01d`,`vol11d` from `pool_stat` where `contract`=? and id>=?", c, id)
 	if err != nil {
-		return nil, nil, fmt.Errorf("get 6 days volumes from db error. %v", err)
+		return vols, fmt.Errorf("get n days volumes from db error. %v", err)
 	}
-	v06d, v16d := big.NewInt(0), big.NewInt(0)
 	for rows.Next() {
 		var vol0, vol1 string
 		if err = rows.Scan(&vol0, &vol1); err != nil {
-			return nil, nil, fmt.Errorf("scan 6 days volumes from db error. %v", err)
+			return vols, fmt.Errorf("scan n days volumes from db error. %v", err)
 		}
 		v0, b0 := new(big.Int).SetString(vol0, 10)
 		v1, b1 := new(big.Int).SetString(vol1, 10)
 		if !b0 || !b1 {
-			return nil, nil, fmt.Errorf("scan 6 days volumes from db error. %s : %s", vol0, vol1)
+			return vols, fmt.Errorf("scan n days volumes from db error. %s : %s", vol0, vol1)
 		}
-		v06d.Add(v06d, v0)
-		v16d.Add(v16d, v1)
+		vols[0].Add(vols[0], v0)
+		vols[1].Add(vols[1], v1)
 	}
-	return v06d, v16d, nil
+	return vols, nil
 }
 
 func StorePoolStatistic(id int64, c, r0, r1, v01d, v11d, v07d, v17d string) error {

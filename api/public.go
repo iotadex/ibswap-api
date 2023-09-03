@@ -90,7 +90,7 @@ func OverviewPoolByContract(c *gin.Context) {
 
 func StatPoolByContract(c *gin.Context) {
 	contract := c.Param("contract")
-	if ps, err := service.CountPoolVolumes(contract); err != nil {
+	if ps, err := service.StatPoolVolumes(contract); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"error": "Statistic Pool is not exist: " + " : " + contract,
 		})
