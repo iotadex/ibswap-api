@@ -14,6 +14,10 @@ type Reserves struct {
 	mu   sync.RWMutex
 }
 
+func NewReserves() *Reserves {
+	return &Reserves{data: [2]*big.Int{big.NewInt(0), big.NewInt(0)}}
+}
+
 func (r *Reserves) set(r0, r1 *big.Int, tick int64) {
 	r.mu.Lock()
 	defer r.mu.Unlock()

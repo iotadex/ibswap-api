@@ -58,7 +58,7 @@ func initPoolStat(c string) {
 		}
 	}
 	//initial utc0Reserves
-	utc0Reserves[c] = &Reserves{}
+	utc0Reserves[c] = NewReserves()
 	if day, rs, err := model.GetLatestUtc0Reserves(c); err != nil {
 		panic(err)
 	} else {
@@ -66,12 +66,21 @@ func initPoolStat(c string) {
 		utc0Reserves[c].day = day
 	}
 	//inital currReserves
-	currReserves[c] = &Reserves{}
+	currReserves[c] = NewReserves()
 	if rs, tick, err := model.GetLatestReserves(c); err != nil {
 		panic(err)
 	} else {
 		currReserves[c].set(rs[0], rs[1], tick)
 	}
+}
+
+func initPoolStatReal(c string) {
+	//initial volumes24H
+	volumes24H[c] = NewVolumes()
+	//initial utc0Reserves
+	utc0Reserves[c] = NewReserves()
+	//inital currReserves
+	currReserves[c] = NewReserves()
 }
 
 func StartPool(ps, t0, t1 []common.Address) {
@@ -149,6 +158,7 @@ func dealNft(nft *EvmNode) {
 				if p, err := model.AddPool(nftToken.pool, 3, nftToken.token0, nftToken.token1, nftToken.fee); err != nil {
 					gl.OutLogger.Error("Add pool to db error. %v : %v", nftToken, err)
 				} else {
+					initPoolStatReal(p.Contract)
 					StartPool([]common.Address{common.HexToAddress(p.Contract)}, []common.Address{common.HexToAddress(p.Token0)}, []common.Address{common.HexToAddress(p.Token1)})
 				}
 			}
@@ -177,6 +187,7 @@ func dealFactory(factory *EvmNode) {
 				gl.OutLogger.Error("Add pool to db error. %v : %v", pool, err)
 				continue
 			} else {
+				initPoolStatReal(p.Contract)
 				StartPool([]common.Address{common.HexToAddress(p.Contract)}, []common.Address{common.HexToAddress(p.Token0)}, []common.Address{common.HexToAddress(p.Token1)})
 			}
 		}
