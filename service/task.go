@@ -59,10 +59,10 @@ func initPoolStat(c string) {
 	}
 	//initial utc0Reserves
 	utc0Reserves[c] = NewReserves()
-	if day, rs, err := model.GetLatestUtc0Reserves(c); err != nil {
+	if day, tick, rs, err := model.GetLatestUtc0Reserves(c); err != nil {
 		panic(err)
 	} else {
-		utc0Reserves[c].set(rs[0], rs[1], 0)
+		utc0Reserves[c].set(rs[0], rs[1], tick)
 		utc0Reserves[c].day = day
 	}
 	//inital currReserves
@@ -92,19 +92,16 @@ func dealTickV3(node *EvmNode, ps, t0, t1 []common.Address) {
 	zero := big.NewInt(0)
 	chLog, chTick := node.StartListenV3(ps, t0, t1)
 	preReserve0, preReserve1 := big.NewInt(0), big.NewInt(0)
-	preTick := int64(0)
 	for {
 		select {
 		case log := <-chLog:
 			gl.OutLogger.Error(log)
 		case tick := <-chTick:
+			key := tick.Address
 			if tick.Volume0.Cmp(zero) == 0 && tick.Volume1.Cmp(zero) == 0 {
-				tick.Tick = preTick
-			} else {
-				preTick = tick.Tick
+				_, tick.Tick = currReserves[key].get()
 			}
 
-			key := tick.Address
 			//1. set current reserves
 			if tick.Reserve0.Cmp(zero) != 0 {
 				preReserve0, preReserve1 = tick.Reserve0, tick.Reserve1
@@ -305,8 +302,8 @@ func countVolumes(v int8) {
 			}
 			vol7d[0].Add(vol7d[0], vol1d.amount0)
 			vol7d[1].Add(vol7d[1], vol1d.amount1)
-			currReserve, _ := currReserves[p.Contract].get()
-			if err := model.StorePoolStatistic(currDay-1, p.Contract, currReserve[0].String(), currReserve[1].String(), vol1d.amount0.String(), vol1d.amount1.String(), vol7d[0].String(), vol7d[1].String()); err != nil {
+			currReserve, tick := currReserves[p.Contract].get()
+			if err := model.StorePoolStatistic(currDay-1, p.Contract, tick, currReserve[0].String(), currReserve[1].String(), vol1d.amount0.String(), vol1d.amount1.String(), vol7d[0].String(), vol7d[1].String()); err != nil {
 				gl.OutLogger.Error("store pool stat into db error. %s : %v", p.Contract, err)
 			}
 		}

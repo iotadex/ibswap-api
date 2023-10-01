@@ -22,6 +22,7 @@ type Pool struct {
 	Token1   string `json:"token1"`
 	FeeRate  int    `json:"fee_rate"`
 	Decimal  int    `json:"decimal"`
+	State    int    `json:"state"`
 }
 
 var coinM map[string]*Coin
@@ -135,14 +136,14 @@ func getPools() {
 	poolMV3 = make(map[string]*Pool)
 	poolsV3 = make([]*Pool, 0)
 	poolMMM = make(map[string]map[string]map[int]*Pool)
-	rows, err := db.Query("select `contract`,`version`,`token0`,`token1`,`fee_rate`,`deci` from `pool`")
+	rows, err := db.Query("select `contract`,`version`,`token0`,`token1`,`fee_rate`,`deci`,`state` from `pool`")
 	if err != nil {
 		log.Printf("Get pools from db error. %v\n", err)
 		return
 	}
 	for rows.Next() {
 		p := Pool{}
-		if err = rows.Scan(&p.Contract, &p.Version, &p.Token0, &p.Token1, &p.FeeRate, &p.Decimal); err != nil {
+		if err = rows.Scan(&p.Contract, &p.Version, &p.Token0, &p.Token1, &p.FeeRate, &p.Decimal, &p.State); err != nil {
 			log.Printf("Scan pool from db error. %v\n", err)
 			continue
 		}

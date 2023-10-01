@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const DefaultTick = 999999999
+
 type Reserves struct {
 	day  int64
 	data [2]*big.Int
@@ -15,7 +17,7 @@ type Reserves struct {
 }
 
 func NewReserves() *Reserves {
-	return &Reserves{data: [2]*big.Int{big.NewInt(0), big.NewInt(0)}}
+	return &Reserves{data: [2]*big.Int{big.NewInt(0), big.NewInt(0)}, tick: DefaultTick}
 }
 
 func (r *Reserves) set(r0, r1 *big.Int, tick int64) {

@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const DefaultTick = 999999999
+
 func StorePoolVolume(tx, contract string, tick int64, r0, r1 string, v0, v1 string) error {
 	_, err := db.Exec("insert into volume(`tx`,`contract`,`tick`,`reserve0`,`reserve1`,`vol0`,`vol1`) values(?,?,?,?,?,?,?)", tx, contract, tick, r0, r1, v0, v1)
 	return err
@@ -58,7 +60,7 @@ func GetLatestReserves(c string) ([2]*big.Int, int64, error) {
 	var tick int64
 	if err := row.Scan(&r0, &r1, &tick); err != nil {
 		if err == sql.ErrNoRows {
-			return [2]*big.Int{big.NewInt(0), big.NewInt(0)}, 0, nil
+			return [2]*big.Int{big.NewInt(0), big.NewInt(0)}, DefaultTick, nil
 		}
 		return [2]*big.Int{}, 0, fmt.Errorf("scan LatestReserves from db error. %v", err)
 	}
@@ -70,22 +72,23 @@ func GetLatestReserves(c string) ([2]*big.Int, int64, error) {
 	return [2]*big.Int{reserve0, reserve1}, tick, nil
 }
 
-func GetLatestUtc0Reserves(c string) (int64, [2]*big.Int, error) {
-	row := db.QueryRow("select `id`,`reserve0`,`reserve1` from `pool_stat` where `contract`=? order by `id` desc limit 1", c)
+func GetLatestUtc0Reserves(c string) (int64, int64, [2]*big.Int, error) {
+	row := db.QueryRow("select `id`,`tick`,`reserve0`,`reserve1` from `pool_stat` where `contract`=? order by `id` desc limit 1", c)
 	var r0, r1 string
 	var day int64
-	if err := row.Scan(&day, &r0, &r1); err != nil {
+	var tick int64
+	if err := row.Scan(&day, &tick, &r0, &r1); err != nil {
 		if err == sql.ErrNoRows {
-			return 0, [2]*big.Int{big.NewInt(0), big.NewInt(0)}, nil
+			return 0, DefaultTick, [2]*big.Int{big.NewInt(0), big.NewInt(0)}, nil
 		}
-		return day, [2]*big.Int{}, fmt.Errorf("scan Utc0Reserves from db error. %v", err)
+		return day, DefaultTick, [2]*big.Int{}, fmt.Errorf("scan Utc0Reserves from db error. %v", err)
 	}
 	reserve0, b0 := new(big.Int).SetString(r0, 10)
 	reserve1, b1 := new(big.Int).SetString(r1, 10)
 	if !b0 || !b1 {
-		return day, [2]*big.Int{}, fmt.Errorf("scan Utc0Reserves from db error. %s : %s", r0, r1)
+		return day, DefaultTick, [2]*big.Int{}, fmt.Errorf("scan Utc0Reserves from db error. %s : %s", r0, r1)
 	}
-	return day + 1, [2]*big.Int{reserve0, reserve1}, nil
+	return day + 1, tick, [2]*big.Int{reserve0, reserve1}, nil
 }
 
 func GetNDaysVolumes(c string, id int64) ([2]*big.Int, error) {
@@ -110,14 +113,15 @@ func GetNDaysVolumes(c string, id int64) ([2]*big.Int, error) {
 	return vols, nil
 }
 
-func StorePoolStatistic(id int64, c, r0, r1, v01d, v11d, v07d, v17d string) error {
-	_, err := db.Exec("insert into pool_stat(`id`,`contract`,`reserve0`,`reserve1`,`vol01d`,`vol11d`,`vol07d`,`vol17d`) values(?,?,?,?,?,?,?,?)", id, c, r0, r1, v01d, v11d, v07d, v17d)
+func StorePoolStatistic(id int64, c string, t int64, r0, r1, v01d, v11d, v07d, v17d string) error {
+	_, err := db.Exec("insert into pool_stat(`id`,`contract`,`tick`,`reserve0`,`reserve1`,`vol01d`,`vol11d`,`vol07d`,`vol17d`) values(?,?,?,?,?,?,?,?,?)", id, c, t, r0, r1, v01d, v11d, v07d, v17d)
 	return err
 }
 
 type PoolStat struct {
 	Id       int64  `json:"id"`
 	Contract string `json:"contract"`
+	Tick     int64  `json:"tick"`
 	Reserve0 string `json:"reserve0"`
 	Reserve1 string `json:"reserve1"`
 	Vol01d   string `json:"vol01d"`
@@ -127,14 +131,14 @@ type PoolStat struct {
 }
 
 func GetPoolStatistic(c string, beginDay int64) ([]PoolStat, error) {
-	rows, err := db.Query("select `id`,`reserve0`,`reserve1`,`vol01d`,`vol11d`,`vol07d`,`vol17d` from `pool_stat` where `contract`=? and id>?", c, beginDay)
+	rows, err := db.Query("select `id`,`tick`,`reserve0`,`reserve1`,`vol01d`,`vol11d`,`vol07d`,`vol17d` from `pool_stat` where `contract`=? and id>?", c, beginDay)
 	if err != nil {
 		return nil, fmt.Errorf("get pool stat from db error. %v", err)
 	}
 	ps := make([]PoolStat, 0)
 	for rows.Next() {
 		p := PoolStat{}
-		if err = rows.Scan(&p.Id, &p.Reserve0, &p.Reserve1, &p.Vol01d, &p.Vol11d, &p.Vol07d, &p.Vol17d); err != nil {
+		if err = rows.Scan(&p.Id, &p.Tick, &p.Reserve0, &p.Reserve1, &p.Vol01d, &p.Vol11d, &p.Vol07d, &p.Vol17d); err != nil {
 			return nil, fmt.Errorf("scan pool stat from db error. %v", err)
 		}
 		ps = append(ps, p)

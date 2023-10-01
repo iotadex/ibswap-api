@@ -85,9 +85,11 @@ Get all pools
     "token0": "0x4a8b2fbf8d3a0e3c3a8e571e3e6b9e8b5b6e5f5e",
     "token1": "0x4a8b2fbf8d3a0e3c3a8e571e3e6b9e8b5b6e5f5e",
     "fee_rate": "1000",
-    "decimal":18
+    "decimal":18,
+    "state":0
 }
 ```
+state 0 is hide and 1 is public
 
 ## GET v3/pools/overview
 ```
