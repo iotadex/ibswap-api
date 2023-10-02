@@ -116,7 +116,7 @@ func dealTickV3(node *EvmNode, ps, t0, t1 []common.Address) {
 			}
 
 			//2. set 24H volumes
-			if tick.Volume0.Cmp(zero) > 0 {
+			if tick.Volume0.Cmp(zero) > 0 || tick.Volume1.Cmp(zero) > 0 {
 				volumes24H[key].append(Volume{amount0: tick.Volume0, amount1: tick.Volume1, ts: tick.Ts})
 			}
 
