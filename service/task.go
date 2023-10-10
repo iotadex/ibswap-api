@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 func Start() {
@@ -50,11 +51,11 @@ func start(v int8) {
 func initPoolStat(c string) {
 	//initial volumes24H
 	volumes24H[c] = NewVolumes()
-	if ids, vols, err := model.Get24hVolumes(c); err != nil {
+	if tss, vols, err := model.Get24hVolumes(c); err != nil {
 		panic(err)
 	} else {
 		for i := len(vols) - 1; i >= 0; i-- {
-			volumes24H[c].append(Volume{amount0: vols[i][0], amount1: vols[i][1], ts: ids[i] * 60})
+			volumes24H[c].append(Volume{amount0: vols[i][0], amount1: vols[i][1], ts: tss[i]})
 		}
 	}
 	//initial utc0Reserves
@@ -137,6 +138,10 @@ func startNft() {
 }
 
 func dealNft(nft *EvmNode) {
+	c, err := ethclient.Dial(config.EvmNode.Rpc)
+	if err != nil {
+		panic(fmt.Errorf("dial node error. %v", err))
+	}
 	chLog, chNftToken := nft.StartListenNft(config.EvmNode.Nft, config.EvmNode.Factory, config.EvmNode.InitCode)
 	for {
 		select {
@@ -162,6 +167,8 @@ func dealNft(nft *EvmNode) {
 			if err := model.StoreNftToken(nftToken.tokenId, nftToken.collection, nftToken.user, nftToken.pool, nftToken.token0, nftToken.token1, nftToken.fee); err != nil {
 				gl.OutLogger.Error("Store nft token to db error. %v : %v", nftToken, err)
 			}
+			addCoin(c, nftToken.token0)
+			addCoin(c, nftToken.token1)
 		}
 	}
 }
@@ -173,6 +180,10 @@ func StartFactory() {
 }
 
 func dealFactory(factory *EvmNode) {
+	c, err := ethclient.Dial(config.EvmNode.Rpc)
+	if err != nil {
+		panic(fmt.Errorf("dial node error. %v", err))
+	}
 	chLog, chPool := factory.StartListenFactory(config.EvmNode.Factory)
 	for {
 		select {
@@ -184,11 +195,42 @@ func dealFactory(factory *EvmNode) {
 				gl.OutLogger.Error("Add pool to db error. %v : %v", pool, err)
 				continue
 			} else {
+				addCoin(c, p.Token0)
+				addCoin(c, p.Token1)
 				initPoolStatReal(p.Contract)
 				StartPool([]common.Address{common.HexToAddress(p.Contract)}, []common.Address{common.HexToAddress(p.Token0)}, []common.Address{common.HexToAddress(p.Token1)})
 			}
 		}
 	}
+}
+
+func addCoin(client *ethclient.Client, contract string) {
+	coins := model.GetCoins()
+	for _, coin := range coins {
+		if coin.Contract == contract {
+			return
+		}
+	}
+	erc20, err := NewERC20(common.HexToAddress(contract), client)
+	if err != nil {
+		gl.OutLogger.Error("NewERC20 error. %v : %v", contract, err)
+		return
+	}
+	deci, err := erc20.Decimals(nil)
+	if err != nil {
+		gl.OutLogger.Error("erc20.Decimals(nil) error. %v : %v", contract, err)
+		return
+	}
+	symbol, err := erc20.Symbol(nil)
+	if err != nil {
+		gl.OutLogger.Error("erc20.Symbol(nil) error. %v : %v", contract, err)
+		return
+	}
+	if err := model.AddToken(symbol, contract, symbol, int64(deci), 1, 0); err != nil {
+		gl.OutLogger.Error("Add coin to db error. %v : %v", contract, err)
+		return
+	}
+	gl.OutLogger.Info("Add a new coin to db. %s : %s : %d", symbol, contract, deci)
 }
 
 type PoolOverview struct {
