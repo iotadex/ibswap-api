@@ -21,6 +21,30 @@ public: 1
 OK
 ```
 
+## POST /admin/pool/state
+```
+Change pool's state
+```
+### param
+```
+contract: 0x4a8b2fbf8d3a0e3c3a8e571e3e6b9e8b5b6e5f5e
+state: 0 or 1
+ts: current timestamp
+sign: sign for ts
+```
+
+## POST /admin/coin/public
+```
+Change coin's public
+```
+### param
+```
+contract: 0x4a8b2fbf8d3a0e3c3a8e571e3e6b9e8b5b6e5f5e
+public: 0 or 1
+ts: current timestamp
+sign: sign for ts
+```
+
 ## GET /coins/all
 ```
 Get all the tokens' data.
@@ -174,6 +198,8 @@ Get all the nfts belong to user. collection if the nft's contract address
     }
 ]
 ```
+
+
 
 # Scheduled Tasks
 ## 1. Record the state of each pools
