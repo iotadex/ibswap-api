@@ -3,7 +3,7 @@ package model
 import (
 	"database/sql"
 	"fmt"
-	"ibswap/config"
+	"ibdex/config"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"

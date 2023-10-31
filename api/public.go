@@ -1,9 +1,9 @@
 package api
 
 import (
-	"ibswap/gl"
-	"ibswap/model"
-	"ibswap/service"
+	"ibdex/gl"
+	"ibdex/model"
+	"ibdex/service"
 	"net/http"
 	"strconv"
 

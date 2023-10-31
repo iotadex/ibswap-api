@@ -1,35 +1,27 @@
 package middleware
 
 import (
-	"encoding/hex"
+	"bytes"
 	"fmt"
-	"ibswap/gl"
+	"ibdex/gl"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gin-gonic/gin"
 )
+
+var AdminAddresses = make(map[string]bool)
 
 func VerifySignature(c *gin.Context) {
 	//get user's public key
 	sign := c.Query("sign")
 	ts := c.Query("ts")
-	address := c.Query("address")
+	address := common.HexToAddress(c.Query("address"))
 
-	signature, err := hex.DecodeString(strings.TrimPrefix(sign, "0x"))
-	if err != nil {
-		c.Abort()
-		c.JSON(http.StatusOK, gin.H{
-			"result":   false,
-			"err-code": gl.PARAMS_ERROR,
-			"err-msg":  "invalid sign",
-		})
-		return
-	}
-
+	signature := common.FromHex(sign)
 	timeStamp, _ := strconv.ParseInt(ts, 10, 64)
 	if (timeStamp + 600) < time.Now().Unix() {
 		c.Abort()
@@ -41,21 +33,11 @@ func VerifySignature(c *gin.Context) {
 		return
 	}
 
-	if len(address) != 42 {
-		c.Abort()
-		c.JSON(http.StatusOK, gin.H{
-			"result":   false,
-			"err-code": gl.SIGN_ERROR,
-			"err-msg":  "address invalid",
-		})
-		return
-	}
-
 	tsData := []byte(ts)
 	ts = fmt.Sprintf("\x19Ethereum Signed Message:\n%d%s", len(tsData), tsData)
 	hash := crypto.Keccak256Hash([]byte(ts))
-	if err = verifyEthAddress(address, signature, hash.Bytes()); err != nil {
-		gl.OutLogger.Error("User's sign error. %s: %s : %s : %v", address, c.Query("ts"), sign, err)
+	if err := verifyEthAddress(address, signature, hash.Bytes()); err != nil {
+		gl.OutLogger.Error("User's sign error. %s: %s : %s : %v", address.Hex(), c.Query("ts"), sign, err)
 		c.Abort()
 		c.JSON(http.StatusOK, gin.H{
 			"result":   false,
@@ -64,12 +46,20 @@ func VerifySignature(c *gin.Context) {
 		})
 		return
 	}
-
-	c.Set("account", address)
+	if !AdminAddresses[address.Hex()] {
+		gl.OutLogger.Error("user forbidden. %s", address.Hex())
+		c.Abort()
+		c.JSON(http.StatusOK, gin.H{
+			"result":   false,
+			"err-code": gl.SIGN_ERROR,
+			"err-msg":  "user forbidden",
+		})
+		return
+	}
 	c.Next()
 }
 
-func verifyEthAddress(address string, signature, hashData []byte) error {
+func verifyEthAddress(address common.Address, signature, hashData []byte) error {
 	if len(signature) < 65 {
 		return fmt.Errorf("signature length is too short")
 	}
@@ -84,8 +74,14 @@ func verifyEthAddress(address string, signature, hashData []byte) error {
 	if err != nil {
 		return fmt.Errorf("sign error")
 	}
-	if address != crypto.PubkeyToAddress(*sigPublicKey).Hex() {
+	if !bytes.Equal(address[:], crypto.PubkeyToAddress(*sigPublicKey).Bytes()) {
 		return fmt.Errorf("sign address error")
 	}
 	return nil
+}
+
+func AddAdmins(addresses []string) {
+	for _, addr := range addresses {
+		AdminAddresses[addr] = true
+	}
 }

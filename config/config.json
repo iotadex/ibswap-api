@@ -21,5 +21,8 @@
 		"init_code": "8e9fe382501507411f52f566085a224b4f7955fab4a5dec1aedf007cb94dffb8"
 	},
 	"scan_time": 120,
-	"stat_days": 30
+	"stat_days": 30,
+	"admin":[
+		"0x504dF97f0e5425Eae1D32ACBE5B2E7Dc1f1Dd9cf"
+	]
 }

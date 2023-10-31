@@ -71,6 +71,28 @@ func AddPool(contract string, version int64, token0, token1 string, feeRate int)
 	return &p, nil
 }
 
+func ChangePoolState(contract string, state int) error {
+	if _, err := db.Exec("update `pool` set state=? where contract=?", state, contract); err != nil {
+		return err
+	}
+
+	if p := poolMV3[contract]; p != nil {
+		p.State = state
+	}
+	return nil
+}
+
+func ChangeTokenPublic(contract string, public int) error {
+	if _, err := db.Exec("update `token` set public=? where contract=?", public, contract); err != nil {
+		return err
+	}
+
+	if c := coinM[contract]; c != nil {
+		c.Public = public
+	}
+	return nil
+}
+
 func GetCoin(symbol string) (*Coin, error) {
 	coinsMu.RLock()
 	defer coinsMu.RUnlock()

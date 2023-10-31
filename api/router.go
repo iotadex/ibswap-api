@@ -3,8 +3,8 @@ package api
 import (
 	"context"
 	"errors"
-	"ibswap/api/middleware"
-	"ibswap/config"
+	"ibdex/api/middleware"
+	"ibdex/config"
 	"log"
 	"net/http"
 	"os"
@@ -63,12 +63,6 @@ func InitRouter() *gin.Engine {
 		api.GET("/pools/overview", OverviewAllV2Pools)
 		api.GET("/pools/:contract/overview", OverviewPoolByContract)
 		api.GET("/pools/:contract/time-stats", StatPoolByContract)
-
-		//		api.GET("/pools/:chain_id/all", GetAllV2Pools)
-		//		api.GET("/pools/:chain_id/:contract", GetPoolByContract)
-		//		api.GET("/pools/:chain_id/overview", OverviewAllV2Pools)
-		//		api.GET("/pools/:chain_id/:contract/overview", OverviewPoolByContract)
-		//		api.GET("/pools/:chain_id/:contract/time-stats", StatPoolByContract)
 	}
 	coins := api.Group("/coins")
 	{
@@ -76,9 +70,6 @@ func InitRouter() *gin.Engine {
 
 		coins.GET("/all", GetAllTokens)
 		coins.GET("/:contract", GetTokenByContract)
-
-		//		coins.GET("/:chain_id/all", GetAllTokens)
-		//		coins.GET("/:chain_id/:contract", GetTokenByContract)
 	}
 	v2 := api.Group("/v2")
 	{
@@ -87,12 +78,6 @@ func InitRouter() *gin.Engine {
 		v2.GET("/pools/overview", OverviewAllV2Pools)
 		v2.GET("/pools/:contract/overview", OverviewPoolByContract)
 		v2.GET("/pools/:contract/time-stats", StatPoolByContract)
-
-		//		v2.GET("/pools/:chain_id/all", GetAllV2Pools)
-		//		v2.GET("/pools/:chain_id/:contract", GetPoolByContract)
-		//		v2.GET("/pools/:chain_id/overview", OverviewAllV2Pools)
-		//		v2.GET("/pools/:chain_id/:contract/overview", OverviewPoolByContract)
-		//		v2.GET("/pools/:chain_id/:contract/time-stats", StatPoolByContract)
 	}
 	v3 := api.Group("/v3")
 	{
@@ -101,19 +86,14 @@ func InitRouter() *gin.Engine {
 		v3.GET("/pools/overview", OverviewAllV3Pools)
 		v3.GET("/pools/:contract/overview", OverviewPoolByContract)
 		v3.GET("/pools/:contract/time-stats", StatPoolByContract)
-
-		//		v3.GET("/pools/:chain_id/all", GetAllV3Pools)
-		//		v3.GET("/pools/:chain_id/:contract", GetPoolByContract)
-		//		v3.GET("/pools/:chain_id/overview", OverviewAllV3Pools)
-		//		v3.GET("/pools/:chain_id/:contract/overview", OverviewPoolByContract)
-		//		v3.GET("/pools/:chain_id/:contract/time-stats", StatPoolByContract)
-
 		v3.GET("/nfts/:user/:collection", GetNftTokensByUser)
 	}
 
 	admin := api.Group("/admin").Use(middleware.VerifySignature)
 	{
 		admin.POST("/pool/add", AddPool)
+		admin.POST("/pool/state", ChangePoolState)
+		admin.POST("/coin/public", ChangeTokenPublic)
 	}
 
 	return api

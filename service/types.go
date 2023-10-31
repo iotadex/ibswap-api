@@ -1,7 +1,7 @@
 package service
 
 import (
-	"ibswap/model"
+	"ibdex/model"
 	"math/big"
 	"sync"
 	"time"

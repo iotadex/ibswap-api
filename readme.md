@@ -3,7 +3,7 @@
     https://dex.iotabee.com
 ```
 
-# APIs for ibswap contract of V2 and V3
+# APIs for ibdex contract of V2 and V3
 
 ## POST /coins/add
 ### param

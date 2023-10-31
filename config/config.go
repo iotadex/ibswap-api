@@ -27,11 +27,12 @@ type evmNode struct {
 }
 
 var (
-	Db       db
-	HttpPort int
-	EvmNode  evmNode //chainid : url
-	ScanTime time.Duration
-	StatDays int64
+	Db             db
+	HttpPort       int
+	EvmNode        evmNode //chainid : url
+	ScanTime       time.Duration
+	StatDays       int64
+	AdminAddresses []string
 )
 
 // Load load config file
@@ -42,11 +43,12 @@ func init() {
 	}
 	defer file.Close()
 	type Config struct {
-		HttpPort int           `json:"http_port"`
-		Db       db            `json:"db"`
-		EvmNode  evmNode       `json:"evm_node"`
-		ScanTime time.Duration `json:"scan_time"`
-		StatDays int64         `json:"stat_days"`
+		HttpPort       int           `json:"http_port"`
+		Db             db            `json:"db"`
+		EvmNode        evmNode       `json:"evm_node"`
+		ScanTime       time.Duration `json:"scan_time"`
+		StatDays       int64         `json:"stat_days"`
+		AdminAddresses []string      `json:"admin"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {
@@ -57,4 +59,5 @@ func init() {
 	EvmNode = all.EvmNode
 	ScanTime = all.ScanTime
 	StatDays = all.StatDays
+	AdminAddresses = all.AdminAddresses
 }
