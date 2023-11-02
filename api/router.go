@@ -91,9 +91,9 @@ func InitRouter() *gin.Engine {
 
 	admin := api.Group("/admin").Use(middleware.VerifySignature)
 	{
-		admin.POST("/pool/add", AddPool)
-		admin.POST("/pool/state", ChangePoolState)
-		admin.POST("/coin/public", ChangeTokenPublic)
+		admin.GET("/pool/add", AddPool)
+		admin.GET("/pool/state", ChangePoolState)
+		admin.GET("/coin/public", ChangeTokenPublic)
 	}
 
 	return api
