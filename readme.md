@@ -21,7 +21,7 @@ public: 1
 OK
 ```
 
-## POST /admin/pool/state
+## GET /admin/pool/state
 ```
 Change pool's state
 ```
@@ -29,11 +29,12 @@ Change pool's state
 ```
 contract: 0x4a8b2fbf8d3a0e3c3a8e571e3e6b9e8b5b6e5f5e
 state: 0 or 1
+address: user's address
 ts: current timestamp
 sign: sign for ts
 ```
 
-## POST /admin/coin/public
+## GET /admin/coin/public
 ```
 Change coin's public
 ```
@@ -41,6 +42,7 @@ Change coin's public
 ```
 contract: 0x4a8b2fbf8d3a0e3c3a8e571e3e6b9e8b5b6e5f5e
 public: 0 or 1
+address: user's address
 ts: current timestamp
 sign: sign for ts
 ```

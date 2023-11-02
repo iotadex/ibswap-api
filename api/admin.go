@@ -33,10 +33,10 @@ func AddPool(c *gin.Context) {
 }
 
 func ChangePoolState(c *gin.Context) {
-	contract := c.PostForm("contract")
-	state, err := strconv.Atoi(c.PostForm("state"))
+	contract := c.Query("contract")
+	state, err := strconv.Atoi(c.Query("state"))
 	if len(contract) == 0 || err != nil {
-		gl.OutLogger.Error("ChangePoolState params error. %s : %s : %v", contract, c.PostForm("state"), err)
+		gl.OutLogger.Error("ChangePoolState params error. %s : %s : %v", contract, c.Query("state"), err)
 		c.String(http.StatusOK, "params error")
 		return
 	}
@@ -51,10 +51,10 @@ func ChangePoolState(c *gin.Context) {
 }
 
 func ChangeTokenPublic(c *gin.Context) {
-	contract := c.PostForm("contract")
-	public, err := strconv.Atoi(c.PostForm("public"))
+	contract := c.Query("contract")
+	public, err := strconv.Atoi(c.Query("public"))
 	if len(contract) == 0 || err != nil {
-		gl.OutLogger.Error("ChangeTokenPublic params error. %s : %s : %v", contract, c.PostForm("public"), err)
+		gl.OutLogger.Error("ChangeTokenPublic params error. %s : %s : %v", contract, c.Query("public"), err)
 		c.String(http.StatusOK, "params error")
 		return
 	}
