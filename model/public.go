@@ -18,6 +18,8 @@ type Coin struct {
 type Pool struct {
 	Contract string `json:"contract"`
 	Version  int8   `json:"version"`
+	Symbol0  string `json:"symbol0"`
+	Symbol1  string `json:"symbol1"`
 	Token0   string `json:"token0"`
 	Token1   string `json:"token1"`
 	FeeRate  int    `json:"fee_rate"`
@@ -66,6 +68,7 @@ func AddPool(contract string, version int64, token0, token1 string, feeRate int)
 		Token1:   token1,
 		FeeRate:  feeRate,
 		Decimal:  18,
+		State:    0,
 	}
 	addPool(&p)
 	return &p, nil
@@ -93,13 +96,13 @@ func ChangeTokenPublic(contract string, public int) error {
 	return nil
 }
 
-func GetCoin(symbol string) (*Coin, error) {
+func GetCoin(contract string) (*Coin, error) {
 	coinsMu.RLock()
 	defer coinsMu.RUnlock()
-	if c, exist := coinM[symbol]; exist {
+	if c, exist := coinM[contract]; exist {
 		return c, nil
 	} else {
-		return c, fmt.Errorf("coin %s is not exist", symbol)
+		return c, fmt.Errorf("coin %s is not exist", contract)
 	}
 }
 
@@ -127,10 +130,19 @@ func GetPoolByTokensAndFee(token0, token1 string, fee int) *Pool {
 }
 
 func GetPools(v int8) []*Pool {
+	pools := poolsV3
 	if v == 2 {
-		return poolsV2
+		pools = poolsV2
 	}
-	return poolsV3
+	for _, p := range pools {
+		if c, err := GetCoin(p.Token0); err == nil {
+			p.Symbol0 = c.Symbol
+		}
+		if c, err := GetCoin(p.Token1); err == nil {
+			p.Symbol1 = c.Symbol
+		}
+	}
+	return pools
 }
 
 func getCoins() {

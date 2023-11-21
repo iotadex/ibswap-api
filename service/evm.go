@@ -397,7 +397,7 @@ StartFilter:
 	for {
 		select {
 		case err := <-sub.Err():
-			chLog <- fmt.Sprintf("Event wss sub error(%v). \nThe EthWssClient will be redialed ...", err)
+			chLog <- fmt.Sprintf("Event wss sub error(%s:%v). \nThe EthWssClient will be redialed ...", factory.Hex(), err)
 			sub.Unsubscribe()
 			time.Sleep(time.Second * 5)
 			goto StartFilter
@@ -417,6 +417,7 @@ func (t *EvmNode) scanNft(factory common.Address, initCode []byte, iNftPostion *
 	if err != nil {
 		panic(err)
 	}
+	fromHeight -= 7000
 
 	log.Default().Printf("Start to scan NFT %s ...\n", query.Addresses[0].Hex())
 	for {

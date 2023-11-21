@@ -6,6 +6,7 @@ import (
 	"ibdex/service"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -110,4 +111,38 @@ func GetNftTokensByUser(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, ts)
 	}
+}
+
+func GetVolumeByPool(c *gin.Context) {
+	contract := c.Query("pool")
+	days, _ := strconv.Atoi(c.Query("days"))
+	if len(contract) == 0 || days == 0 {
+		gl.OutLogger.Error("GetVolumeByPool error. %s : %s", contract, c.Query("days"))
+		c.JSON(http.StatusOK, gin.H{
+			"error": "params : " + contract + " : " + c.Query("days"),
+		})
+		return
+	}
+
+	id := time.Now().Unix()/86400 - int64(days)
+	vols, err := model.GetNDaysVolumes(contract, id)
+	if err != nil {
+		gl.OutLogger.Error("GetNDaysVolumes error. %s : %v", contract, err)
+		c.JSON(http.StatusOK, gin.H{
+			"error": "params : " + contract + " : " + c.Query("days"),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"begin_id": id,
+		"volumes":  vols,
+	})
+}
+
+func GetVolumes(c *gin.Context) {
+}
+
+func GetEthPrice(c *gin.Context) {
+	c.JSON(http.StatusOK, service.GetEthPrice())
 }

@@ -58,6 +58,7 @@ func InitRouter() *gin.Engine {
 	api := gin.New()
 	api.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: GinLogger}), gin.Recovery())
 	{
+		api.GET("price/eth_usd", GetEthPrice)
 		api.GET("/pools/all", GetAllV2Pools)
 		api.GET("/pools/:contract", GetPoolByContract)
 		api.GET("/pools/overview", OverviewAllV2Pools)
@@ -87,6 +88,8 @@ func InitRouter() *gin.Engine {
 		v3.GET("/pools/:contract/overview", OverviewPoolByContract)
 		v3.GET("/pools/:contract/time-stats", StatPoolByContract)
 		v3.GET("/nfts/:user/:collection", GetNftTokensByUser)
+		v3.GET("/volume", GetVolumeByPool)
+		v3.GET("/volumes", GetVolumes)
 	}
 
 	admin := api.Group("/admin").Use(middleware.VerifySignature)
