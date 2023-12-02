@@ -12,6 +12,13 @@ func GetEthPrice() float64 {
 	return currentEthPrice.Get()
 }
 
+func GetTokenUsdPrice(contract string) float64 {
+	if tokenPricesAsUsd[contract] != nil {
+		return tokenPricesAsUsd[contract].Get()
+	}
+	return 0
+}
+
 type PoolOverview struct {
 	Contract     string `json:"contract"`
 	Token0       string `json:"token0"`

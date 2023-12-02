@@ -417,7 +417,7 @@ func (t *EvmNode) scanNft(factory common.Address, initCode []byte, iNftPostion *
 	if err != nil {
 		panic(err)
 	}
-	fromHeight -= 7000
+	fromHeight -= 100
 
 	log.Default().Printf("Start to scan NFT %s ...\n", query.Addresses[0].Hex())
 	for {

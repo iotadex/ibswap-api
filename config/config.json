@@ -1,28 +1,29 @@
 {
-	"http_port": 8080,
+	"http_port": 8090,
 	"db": {
 		"lifetime": 30,
 		"openconns": 200,
 		"idleconns": 100,
-		"host": "",
+		"host": "localhost",
 		"port": "3306",
 		"dbname": "iotabee-dex",
 		"usr": "root",
 		"pwd": "851012"
 	},
 	"evm_node": {
-		"rpc": "https://json-rpc.evm.testnet.shimmer.network/",
-		"wss": "wss://ws.json-rpc.evm.testnet.shimmer.network/",
+		"rpc": "https://json-rpc.evm.shimmer.network",
+		"wss": "wss://ws.json-rpc.evm.shimmer.network",
 		"max_scan_height": 999,
-		"listen_type": 0,
+		"listen_type": 1,
 		"listen_pool_count": 10,
-		"nft": "0xA003566666347dB17fd0aD4e47205901A370A51d",
-		"factory": "0xf5505F34D30eCd03811DAFC8326874e74900Ee76",
-		"init_code": "8e9fe382501507411f52f566085a224b4f7955fab4a5dec1aedf007cb94dffb8"
+		"nft": "0x5f0E8A90f8093aBddF0cA21898B2A71350754a0D",
+		"factory": "0x2Eb409E79ede4f91fAeB043E72557109A2235915",
+		"init_code": "d0aea3694b6899e0659f9ac990b71639615601444c2dd3e05521451de0f7ecfe"
 	},
-	"scan_time": 120,
+	"scan_time": 60,
 	"stat_days": 30,
 	"admin":[
-		"0x504dF97f0e5425Eae1D32ACBE5B2E7Dc1f1Dd9cf"
-	]
+		"0x504dF97f0e5425Eae1D32ACBE5B2E7Dc1f1Dd9cf",
+		"0x9FCe0d4B53089a0772a3628A3e782461af1524f4"
+	]	
 }

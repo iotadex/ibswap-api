@@ -13,8 +13,6 @@ import (
 )
 
 func Start() {
-	RealEthPrice()
-
 	volumes24H = make(map[string]*Volumes)
 	utc0Reserves = make(map[string]*Reserves)
 	currReserves = make(map[string]*Reserves)
@@ -23,6 +21,8 @@ func Start() {
 	startNft()
 	start(3)
 	go countVolumes(3)
+
+	RealEthPrice()
 }
 
 func start(v int8) {

@@ -92,6 +92,12 @@ func InitRouter() *gin.Engine {
 		v3.GET("/volumes", GetVolumes)
 	}
 
+	gecko := api.Group("/gecko")
+	{
+		gecko.GET("ticker", Tickers)
+		gecko.GET("usdprices", GetUsdPrices)
+	}
+
 	admin := api.Group("/admin").Use(middleware.VerifySignature)
 	{
 		admin.GET("/pool/add", AddPool)
