@@ -218,4 +218,3 @@ Time schedule. Every day at 00:00 UTC to record the daily state of each pool, in
 * reserves,
 * volumes1d,
 * volumes7d.
-
