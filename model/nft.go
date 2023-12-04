@@ -7,7 +7,7 @@ import (
 
 func StoreNftToken(tokenId, collection, user, pool, token0, token1 string, fee int) error {
 	_, err := db.Exec("INSERT INTO `nft`(`tokenid`,`collection`,`user`,`pool`,`token0`,`token1`,`fee`) VALUES(?,?,?,?,?,?,?)", tokenId, collection, user, pool, token0, token1, fee)
-	if strings.HasPrefix(err.Error(), "Error 1062") {
+	if err != nil && strings.HasPrefix(err.Error(), "Error 1062") {
 		return nil
 	}
 	return err

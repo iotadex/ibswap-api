@@ -12,7 +12,7 @@ const DefaultTick = 999999999
 
 func StorePoolVolume(tx, contract string, tick int64, r0, r1 string, v0, v1 string) error {
 	_, err := db.Exec("insert into volume(`tx`,`contract`,`tick`,`reserve0`,`reserve1`,`vol0`,`vol1`) values(?,?,?,?,?,?,?)", tx, contract, tick, r0, r1, v0, v1)
-	if strings.HasPrefix(err.Error(), "Error 1062") {
+	if err != nil && strings.HasPrefix(err.Error(), "Error 1062") {
 		return nil
 	}
 	return err
@@ -119,7 +119,7 @@ func GetNDaysVolumes(c string, id int64) ([2]*big.Int, error) {
 
 func StorePoolStatistic(id int64, c string, t int64, r0, r1, v01d, v11d, v07d, v17d string) error {
 	_, err := db.Exec("insert into pool_stat(`id`,`contract`,`tick`,`reserve0`,`reserve1`,`vol01d`,`vol11d`,`vol07d`,`vol17d`) values(?,?,?,?,?,?,?,?,?)", id, c, t, r0, r1, v01d, v11d, v07d, v17d)
-	if strings.HasPrefix(err.Error(), "Error 1062") {
+	if err != nil && strings.HasPrefix(err.Error(), "Error 1062") {
 		return nil
 	}
 	return err

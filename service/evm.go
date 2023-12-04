@@ -276,6 +276,7 @@ func (t *EvmNode) scanPoolsV3(erc20Tokens map[string][2]*ERC20, query ethereum.F
 	if err != nil {
 		panic(err)
 	}
+	fromHeight -= 400
 
 	log.Default().Printf("Start to scan V3 pool %d ...\n", len(query.Addresses))
 	for {
@@ -417,7 +418,7 @@ func (t *EvmNode) scanNft(factory common.Address, initCode []byte, iNftPostion *
 	if err != nil {
 		panic(err)
 	}
-	fromHeight -= 100
+	fromHeight -= 400
 
 	log.Default().Printf("Start to scan NFT %s ...\n", query.Addresses[0].Hex())
 	for {
