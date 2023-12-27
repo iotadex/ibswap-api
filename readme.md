@@ -5,22 +5,6 @@
 
 # APIs for ibdex contract of V2 and V3
 
-## POST /coins/add
-### param
-```
-symbol: SMR,
-chain_id: 1071,
-contract: 0x4a8b2fbf8d3a0e3c3a8e571e3e6b9e8b5b6e5f5e,
-code: smr,
-type": 0,
-decimal: 18,
-public: 1
-```
-### Respose
-```
-OK
-```
-
 ## GET /admin/pool/state
 ```
 Change pool's state
@@ -201,20 +185,24 @@ Get all the nfts belong to user. collection if the nft's contract address
 ]
 ```
 
-
-
-# Scheduled Tasks
-## 1. Record the state of each pools
-Time schedule. Every 1 minute to record the state of each pool, including
-
-* reserves
-* volumes
-* ts
-
-## 2. Record the daily state of each pools
-Time schedule. Every day at 00:00 UTC to record the daily state of each pool, including
-
-* day,
-* reserves,
-* volumes1d,
-* volumes7d.
+## GET https://dex.iotabee.com/gecko/ticker
+```
+GET gecko ticker api
+```
+### respose
+```json
+[{
+    "ticker_id":"0x04306Ea9662FA83eD5B0A91932517D61745F9F7f",
+    "base_currency":"0x174d211F46994860500DB4d66B3EFE605A82BF95",
+    "target_currency":"0x5dA63f4456A56a0c5Cb0B2104a3610D5CA3d48E8",
+    "pool_id":"0x04306Ea9662FA83eD5B0A91932517D61745F9F7f",
+    "last_price":"0.0000000000000000000000000028575105487891287",
+    "base_volume":"399170.193676769",
+    "target_volume":"169.468991",
+    "liquidity_in_usd":"4740",
+    "bid":"",
+    "ask":"",
+    "high":"",
+    "low":""
+}]
+```
