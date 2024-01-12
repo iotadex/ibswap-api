@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"ibdex/config"
+	"ibdex/contracts"
 	"log"
 	"math/big"
 	"strings"
@@ -203,17 +204,17 @@ func (t *EvmNode) StartListenV3(pools []common.Address, token0s []common.Address
 		panic(fmt.Errorf("dial node error. %v", err))
 	}
 
-	erc20Tokens := make(map[string][2]*ERC20)
+	erc20Tokens := make(map[string][2]*contracts.ERC20)
 	for i, pool := range pools {
-		token0, err := NewERC20(token0s[i], c)
+		token0, err := contracts.NewERC20(token0s[i], c)
 		if err != nil {
 			panic(err)
 		}
-		token1, err := NewERC20(token1s[i], c)
+		token1, err := contracts.NewERC20(token1s[i], c)
 		if err != nil {
 			panic(err)
 		}
-		erc20Tokens[pool.Hex()] = [2]*ERC20{token0, token1}
+		erc20Tokens[pool.Hex()] = [2]*contracts.ERC20{token0, token1}
 	}
 
 	// connetion err chan
@@ -235,7 +236,7 @@ func (t *EvmNode) StartListenV3(pools []common.Address, token0s []common.Address
 	return chLog, chPoolStat
 }
 
-func (t *EvmNode) listenPoolsV3(erc20Tokens map[string][2]*ERC20, query ethereum.FilterQuery, chLog chan string, chPoolStat chan PoolStat) {
+func (t *EvmNode) listenPoolsV3(erc20Tokens map[string][2]*contracts.ERC20, query ethereum.FilterQuery, chLog chan string, chPoolStat chan PoolStat) {
 StartFilter:
 	//Create the ethclient
 	c, err := ethclient.Dial(t.wss)
@@ -266,7 +267,7 @@ StartFilter:
 	}
 }
 
-func (t *EvmNode) scanPoolsV3(erc20Tokens map[string][2]*ERC20, query ethereum.FilterQuery, chLog chan string, chPoolStat chan PoolStat) {
+func (t *EvmNode) scanPoolsV3(erc20Tokens map[string][2]*contracts.ERC20, query ethereum.FilterQuery, chLog chan string, chPoolStat chan PoolStat) {
 	c, err := ethclient.Dial(t.rpc)
 	if err != nil {
 		panic(fmt.Errorf("dial node error. %v", err))
@@ -307,7 +308,7 @@ func (t *EvmNode) scanPoolsV3(erc20Tokens map[string][2]*ERC20, query ethereum.F
 	}
 }
 
-func (t *EvmNode) dealPoolV3Log(token0, token1 *ERC20, vLog *types.Log, chLog chan string, chPoolStat chan PoolStat) {
+func (t *EvmNode) dealPoolV3Log(token0, token1 *contracts.ERC20, vLog *types.Log, chLog chan string, chPoolStat chan PoolStat) {
 	amount0 := big.NewInt(0)
 	amount1 := big.NewInt(0)
 	var tick int64
@@ -354,7 +355,7 @@ func (t *EvmNode) StartListenNft(nftPos, f, code string) (chan string, chan NftT
 
 	nft := common.HexToAddress(nftPos)
 
-	iNftPostion, err := NewINonfungiblePositionManager(nft, rcpClient)
+	iNftPostion, err := contracts.NewINonfungiblePositionManager(nft, rcpClient)
 	if err != nil {
 		panic(err)
 	}
@@ -378,7 +379,7 @@ func (t *EvmNode) StartListenNft(nftPos, f, code string) (chan string, chan NftT
 	return chLog, chNft
 }
 
-func (t *EvmNode) listenNft(factory common.Address, initCode []byte, iNftPostion *INonfungiblePositionManager, query ethereum.FilterQuery, chLog chan string, chNft chan NftToken) {
+func (t *EvmNode) listenNft(factory common.Address, initCode []byte, iNftPostion *contracts.INonfungiblePositionManager, query ethereum.FilterQuery, chLog chan string, chNft chan NftToken) {
 StartFilter:
 	//Create the ethclient
 	c, err := ethclient.Dial(t.wss)
@@ -408,7 +409,7 @@ StartFilter:
 	}
 }
 
-func (t *EvmNode) scanNft(factory common.Address, initCode []byte, iNftPostion *INonfungiblePositionManager, query ethereum.FilterQuery, chLog chan string, chNft chan NftToken) (chan string, chan NftToken) {
+func (t *EvmNode) scanNft(factory common.Address, initCode []byte, iNftPostion *contracts.INonfungiblePositionManager, query ethereum.FilterQuery, chLog chan string, chNft chan NftToken) (chan string, chan NftToken) {
 	c, err := ethclient.Dial(t.rpc)
 	if err != nil {
 		panic(fmt.Errorf("dial node error. %v", err))
@@ -448,7 +449,7 @@ func (t *EvmNode) scanNft(factory common.Address, initCode []byte, iNftPostion *
 	}
 }
 
-func (t *EvmNode) dealNFTLog(factory common.Address, initCode []byte, iNftPostion *INonfungiblePositionManager, vLog *types.Log, chLog chan string, chNft chan NftToken) {
+func (t *EvmNode) dealNFTLog(factory common.Address, initCode []byte, iNftPostion *contracts.INonfungiblePositionManager, vLog *types.Log, chLog chan string, chNft chan NftToken) {
 	from := common.BytesToAddress(vLog.Topics[1].Bytes())
 	to := common.BytesToAddress(vLog.Topics[2].Bytes())
 	tokenId := new(big.Int).SetBytes(vLog.Topics[3].Bytes())

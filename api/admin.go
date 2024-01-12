@@ -67,3 +67,12 @@ func ChangeTokenPublic(c *gin.Context) {
 		gl.OutLogger.Info("ChangeTokenPublic is successful. %s : %d", contract, public)
 	}
 }
+
+func ProtocolFees(c *gin.Context) {
+	if pfs, err := model.GetProtocolFees(); err != nil {
+		gl.OutLogger.Error("model.GetProtocolFees() error. %v", err)
+		c.String(http.StatusOK, "system error")
+	} else {
+		c.JSON(http.StatusOK, pfs)
+	}
+}

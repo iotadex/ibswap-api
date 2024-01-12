@@ -64,6 +64,8 @@ func InitRouter() *gin.Engine {
 		api.GET("/pools/overview", OverviewAllV2Pools)
 		api.GET("/pools/:contract/overview", OverviewPoolByContract)
 		api.GET("/pools/:contract/time-stats", StatPoolByContract)
+
+		api.GET("/protocolfees", ProtocolFees)
 	}
 	coins := api.Group("/coins")
 	{

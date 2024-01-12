@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"ibdex/config"
+	"ibdex/contracts"
 	"ibdex/gl"
 	"ibdex/model"
 	"math/big"
@@ -23,6 +24,7 @@ func Start() {
 	go countVolumes(3)
 
 	RealEthPrice()
+	RealProtocolFees()
 }
 
 func start(v int8) {
@@ -214,7 +216,7 @@ func addCoin(client *ethclient.Client, contract string) {
 			return
 		}
 	}
-	erc20, err := NewERC20(common.HexToAddress(contract), client)
+	erc20, err := contracts.NewERC20(common.HexToAddress(contract), client)
 	if err != nil {
 		gl.OutLogger.Error("NewERC20 error. %v : %v", contract, err)
 		return

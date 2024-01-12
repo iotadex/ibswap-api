@@ -152,3 +152,43 @@ func GetPoolStatistic(c string, beginDay int64) ([]PoolStat, error) {
 	}
 	return ps, nil
 }
+
+func StoreProtocolFees(c, t0, a0, t1, a1 string) error {
+	_, err := db.Exec("replace into protocol(`pool`,`t0`,`a0`,`t1`,`a1`) values(?,?,?,?,?)", c, t0, a0, t1, a1)
+	return err
+}
+
+type ProtocolFee struct {
+	Pool string `json:"pool"`
+	T0   string `json:"token0"`
+	D0   int    `json:"decimal0"`
+	A0   string `json:"amount0"`
+	T1   string `json:"token1"`
+	D1   int    `json:"decimal1"`
+	A1   string `json:"amount1"`
+	Ts   string `json:"update_time"`
+}
+
+func GetProtocolFees() ([]ProtocolFee, error) {
+	rows, err := db.Query("select `pool`,`t0`,`a0`,`t1`,`a1`,`ts` from `protocol`")
+	if err != nil {
+		return nil, fmt.Errorf("get protocol fees from db error. %v", err)
+	}
+	pfs := make([]ProtocolFee, 0)
+	for rows.Next() {
+		p := ProtocolFee{}
+		if err = rows.Scan(&p.Pool, &p.T0, &p.A0, &p.T1, &p.A1, &p.Ts); err != nil {
+			return nil, fmt.Errorf("scan pool stat from db error. %v", err)
+		}
+		if pool, err := GetPool(p.Pool); err == nil && pool != nil {
+			if t0, err0 := GetCoin(pool.Token0); err0 == nil && t0 != nil {
+				p.D0 = t0.Decimal
+			}
+			if t1, err1 := GetCoin(pool.Token1); err1 == nil && t1 != nil {
+				p.D1 = t1.Decimal
+			}
+		}
+		pfs = append(pfs, p)
+	}
+	return pfs, nil
+}
