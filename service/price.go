@@ -77,12 +77,22 @@ var tokenPricesAsUsd map[string]*TokenPrice
 func setTokensPriceAsUsd() {
 	pools := model.GetPools(3)
 
-	q := make([]string, 1)
+	q := make([]string, 3)
 	q[0] = "0xa158A39d00C79019A01A6E86c56E96C461334Eb0"
 	tokenPricesAsUsd[q[0]] = currentEthPrice
+	q[1] = "0xa4f8C7C1018b9dD3be5835bF00f335D9910aF6Bd"
+	tokenPricesAsUsd[q[1]] = &TokenPrice{
+		price: 1,
+	}
+	q[2] = "0xeCE555d37C37D55a6341b80cF35ef3BC57401d1A"
+	tokenPricesAsUsd[q[2]] = &TokenPrice{
+		price: 1,
+	}
 
 	visited := make(map[string]bool)
 	visited[q[0]] = true
+	visited[q[1]] = true
+	visited[q[2]] = true
 	for len(q) > 0 {
 		t0 := q[0]
 		price := tokenPricesAsUsd[t0].Get()
