@@ -31,6 +31,10 @@ type PoolOverview struct {
 	Utc0Reserve0 string `json:"utc0reserve0"`
 	Utc0Reserve1 string `json:"utc0reserve1"`
 	Utc0Tick     int64  `json:"utc0_tick"`
+	Vol01d       string `json:"vol01d"`
+	Vol11d       string `json:"vol11d"`
+	Vol07d       string `json:"vol07d"`
+	Vol17d       string `json:"vol17d"`
 	Ts           int64  `json:"ts"`
 }
 
@@ -45,6 +49,14 @@ func OverviewPools(v int8) []PoolOverview {
 		currReserve, currTick := currReserves[key].get()
 		vol24H := volumes24H[key].get24HVolume()
 		utc0Reserve, utc0Tick := utc0Reserves[key].get()
+		var vol01d, vol11d, vol07d, vol17d string
+		if statPs, err := StatPoolVolumes(p.Contract); err == nil && len(statPs) > 0 {
+			vol01d = statPs[len(statPs)-1].Vol01d
+			vol11d = statPs[len(statPs)-1].Vol11d
+			vol07d = statPs[len(statPs)-1].Vol07d
+			vol17d = statPs[len(statPs)-1].Vol17d
+		}
+
 		ps = append(ps, PoolOverview{
 			Contract:     p.Contract,
 			Token0:       p.Token0,
@@ -57,6 +69,10 @@ func OverviewPools(v int8) []PoolOverview {
 			Utc0Reserve0: utc0Reserve[0].String(),
 			Utc0Reserve1: utc0Reserve[1].String(),
 			Utc0Tick:     utc0Tick,
+			Vol01d:       vol01d,
+			Vol11d:       vol11d,
+			Vol07d:       vol07d,
+			Vol17d:       vol17d,
 			Ts:           vol24H.ts + 86400,
 		})
 	}
@@ -75,6 +91,15 @@ func OverviewPoolsByContract(contract string) (*PoolOverview, error) {
 	currReserve, currTick := currReserves[key].get()
 	vol24H := volumes24H[key].get24HVolume()
 	utc0Reserve, utc0Tick := utc0Reserves[key].get()
+
+	var vol01d, vol11d, vol07d, vol17d string
+	if statPs, err := StatPoolVolumes(contract); err == nil && len(statPs) > 0 {
+		vol01d = statPs[len(statPs)-1].Vol01d
+		vol11d = statPs[len(statPs)-1].Vol11d
+		vol07d = statPs[len(statPs)-1].Vol07d
+		vol17d = statPs[len(statPs)-1].Vol17d
+	}
+
 	return &PoolOverview{
 		Contract:     contract,
 		Token0:       p.Token0,
@@ -87,6 +112,10 @@ func OverviewPoolsByContract(contract string) (*PoolOverview, error) {
 		Utc0Reserve0: utc0Reserve[0].String(),
 		Utc0Reserve1: utc0Reserve[1].String(),
 		Utc0Tick:     utc0Tick,
+		Vol01d:       vol01d,
+		Vol11d:       vol11d,
+		Vol07d:       vol07d,
+		Vol17d:       vol17d,
 		Ts:           vol24H.ts + 86400,
 	}, nil
 }

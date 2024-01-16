@@ -59,11 +59,12 @@ func InitRouter() *gin.Engine {
 	api.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: GinLogger}), gin.Recovery())
 	{
 		api.GET("price/eth_usd", GetEthPrice)
-		api.GET("/pools/all", GetAllV2Pools)
+		api.GET("/pools/all", GetAllV3Pools)
 		api.GET("/pools/:contract", GetPoolByContract)
-		api.GET("/pools/overview", OverviewAllV2Pools)
 		api.GET("/pools/:contract/overview", OverviewPoolByContract)
+		api.GET("/pools/overview", OverviewAllV3Pools)
 		api.GET("/pools/:contract/time-stats", StatPoolByContract)
+		api.GET("/pools/time-stats", StatPoolByContract)
 
 		api.GET("/protocolfees", ProtocolFees)
 	}
@@ -74,6 +75,7 @@ func InitRouter() *gin.Engine {
 		coins.GET("/all", GetAllTokens)
 		coins.GET("/:contract", GetTokenByContract)
 	}
+
 	v2 := api.Group("/v2")
 	{
 		v2.GET("/pools/all", GetAllV2Pools)
