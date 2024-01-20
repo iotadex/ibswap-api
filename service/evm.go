@@ -455,18 +455,17 @@ func (t *EvmNode) dealNFTLog(factory common.Address, initCode []byte, iNftPostio
 	tokenId := new(big.Int).SetBytes(vLog.Topics[3].Bytes())
 	var d int
 	var user string
-	if bytes.Equal(from[:], zeroAddress[:]) { //Mint NFT
+	if bytes.Equal(from[:], zeroAddress[:]) { // Mint NFT
 		d = 1
 		user = to.String()
-	}
-	if bytes.Equal(to[:], zeroAddress[:]) { // Burn NFT
+	} else if bytes.Equal(to[:], zeroAddress[:]) { // Burn NFT
 		d = -1
 		user = from.String()
+	} else { // NFT transfer from A to B
+		d = 0
+		user = to.String()
 	}
-	if d == 0 {
-		//neither Mint nor Burn
-		return
-	}
+
 	//Get the postion
 	var token0, token1, pool string
 	var fee int

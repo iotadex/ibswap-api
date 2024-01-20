@@ -159,6 +159,11 @@ func dealNft(nft *EvmNode) {
 					gl.OutLogger.Error("Delete nft token error. %v : %v", nftToken, err)
 				}
 				continue
+			} else if nftToken.direction == 0 {
+				if err := model.TransferNftToOther(nftToken.user, nftToken.tokenId, nftToken.collection); err != nil {
+					gl.OutLogger.Error("transfer nft to other error. %v : %v", nftToken, err)
+				}
+				continue
 			}
 			//Get the pool's contract
 			if p := model.GetPoolByTokensAndFee(nftToken.token0, nftToken.token1, nftToken.fee); p == nil {

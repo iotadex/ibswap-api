@@ -18,6 +18,11 @@ func DeleteNftToken(tokenId, collection string) error {
 	return err
 }
 
+func TransferNftToOther(tokenId, collection, user string) error {
+	_, err := db.Exec("update `nft` set `user`=? where `tokenid`=? and `collection`=?", user, tokenId, collection)
+	return err
+}
+
 type NftToken struct {
 	TokenId    string `json:"tokenid"`
 	Collection string `json:"collection"`
