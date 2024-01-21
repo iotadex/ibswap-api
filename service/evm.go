@@ -58,7 +58,7 @@ type NftToken struct {
 	token0     string
 	token1     string
 	fee        int
-	direction  int //1: mint, -1: burn
+	direction  int //1: mint, -1: burn, 0: transfer
 }
 
 type Pool struct {

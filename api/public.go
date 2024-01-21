@@ -59,7 +59,7 @@ func GetAllV3Pools(c *gin.Context) {
 
 func GetPoolByContract(c *gin.Context) {
 	contract := c.Param("contract")
-	if pool, err := model.GetPool(contract); err != nil {
+	if pool, err := model.GetPool(contract); err != nil || pool == nil {
 		c.JSON(http.StatusOK, gin.H{
 			"error": "Get Pool : " + " : " + contract,
 		})

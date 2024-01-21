@@ -160,7 +160,7 @@ func dealNft(nft *EvmNode) {
 				}
 				continue
 			} else if nftToken.direction == 0 {
-				if err := model.TransferNftToOther(nftToken.user, nftToken.tokenId, nftToken.collection); err != nil {
+				if err := model.TransferNftToOther(nftToken.tokenId, nftToken.collection, nftToken.user); err != nil {
 					gl.OutLogger.Error("transfer nft to other error. %v : %v", nftToken, err)
 				}
 				continue
